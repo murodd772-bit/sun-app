@@ -1,0 +1,22 @@
+import telebot
+from telebot import types
+
+TOKEN = 'ТВОЙ_ТОКЕН_ОТ_BOTFATHER'
+bot = telebot.TeleBot(TOKEN)
+
+@bot.message_handler(commands=['start'])
+def start(message):
+    # Получаем ID реферала из команды /start 12345
+    args = message.text.split()
+    ref_id = args[1] if len(args) > 1 else "no_ref"
+    
+    # Создаем кнопку для открытия Web App
+    markup = types.InlineKeyboardMarkup()
+    # ВАЖНО: передаем параметр старта в ссылку сайта
+    web_app = types.WebAppInfo(f"https://murodd772-bit.github.io/sun-app/?tgWebAppStartParam={ref_id}")
+    btn = types.InlineKeyboardButton("Открыть Sun App ☀️", web_app=web_app)
+    markup.add(btn)
+    
+    bot.send_message(message.chat.id, "Добро пожаловать в Sun App! Нажми на кнопку ниже, чтобы запустить приложение и активировать бонус.", reply_markup=markup)
+
+bot.polling()
