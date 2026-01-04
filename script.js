@@ -1,5 +1,13 @@
-// Инициализация Telegram WebApp
+// Инициализация Telegram
 const tg = window.Telegram.WebApp;
+tg.ready();
+tg.expand();
+
+// Получаем реальный ID пользователя из Telegram
+const userTelegramID = tg.initDataUnsafe.user ? tg.initDataUnsafe.user.id : "7849326904";
+
+// Имя твоего бота
+const botUsername = "sun_app_bot";
 
 // Сообщаем Telegram, что приложение загрузилось и его можно развернуть
 tg.ready();
@@ -125,16 +133,34 @@ function handleWithdraw() {
     if(v > 0 && v <= balance) { balance -= v; addTx('minus', v, 'Вывод'); closeModal(); }
 }
 
-function copyLink() {
-    const link = "t.me/SunStakingBot?start=7849326904";
-    navigator.clipboard.writeText(link);
-    alert("Ссылка скопирована!");
+// Функция для обновления текста ссылки на экране
+function updateRefLinkUI() {
+    const fullLink = `https://t.me/${botUsername}?start=${userTelegramID}`;
+    const linkField = document.querySelector('.ref-link-field');
+    if (linkField) {
+        linkField.textContent = fullLink;
+    }
 }
 
+// Функция Копирования
+function copyLink() {
+    const fullLink = `https://t.me/${botUsername}?start=${userTelegramID}`;
+    navigator.clipboard.writeText(fullLink).then(() => {
+        alert("Ссылка скопирована!");
+    });
+}
+
+// Функция "Пригласить друга" (открывает список чатов в TG)
 function shareInvite() {
-    const url = "https://t.me/share/url?url=t.me/SunStakingBot?start=7849326904&text=Майни TON со мной!";
-    if(window.Telegram && window.Telegram.WebApp) window.Telegram.WebApp.openTelegramLink(url);
-    else window.open(url);
+    const fullLink = `https://t.me/${botUsername}?start=${userTelegramID}`;
+    const shareText = "Майни TON вместе со мной в Sun App! ☀️";
+    const url = `https://t.me/share/url?url=${encodeURIComponent(fullLink)}&text=${encodeURIComponent(shareText)}`;
+    
+    tg.openTelegramLink(url);
+}
+
+// Вызываем обновление при старте
+updateRefLinkUI();
 }
 
 // Старт
@@ -142,3 +168,4 @@ renderHistory();
 renderFriends();
 
 setInterval(calculateGrowth, 100);
+
