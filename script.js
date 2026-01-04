@@ -1,3 +1,13 @@
+// Инициализация Telegram WebApp
+const tg = window.Telegram.WebApp;
+
+// Сообщаем Telegram, что приложение загрузилось и его можно развернуть
+tg.ready();
+tg.expand();
+
+// Получаем ID пользователя (если открыто в телеграме) или ставим дефолт для теста
+const userTelegramID = tg.initDataUnsafe.user ? tg.initDataUnsafe.user.id : "000000000";
+const userFirstName = tg.initDataUnsafe.user ? tg.initDataUnsafe.user.first_name : "User";
 let balance = parseFloat(localStorage.getItem('sun_app_balance')) || 10.0;
 let lastUpdateTime = parseInt(localStorage.getItem('sun_app_last_time')) || Date.now();
 let transactions = JSON.parse(localStorage.getItem('sun_app_history')) || [];
@@ -130,4 +140,5 @@ function shareInvite() {
 // Старт
 renderHistory();
 renderFriends();
+
 setInterval(calculateGrowth, 100);
