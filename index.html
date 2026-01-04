@@ -50,6 +50,7 @@
                 </div>
                 <h2 class="list-title">Друзья (<span id="friends-count">0</span>)</h2>
                 <div id="friends-list-container"></div>
+                <button onclick="simulateNewFriend()" style="margin-top:20px; opacity:0.2; background:none; color:white; border:1px solid #444; width:100%; padding:10px; border-radius:10px;">Тест: Добавить друга</button>
             </div>
         </div>
 
@@ -63,21 +64,21 @@
     <div id="depositModal" class="overlay">
         <div class="modal">
             <h3>Пополнение TON</h3>
-            <p>Отправьте TON на этот адрес:</p>
-            <code style="word-break:break-all; background:#222; padding:5px;">UQBY-ВАШ-АДРЕС-КОШЕЛЬКА</code>
+            <p>Отправьте TON на адрес:</p>
+            <code id="deposit-address" style="word-break:break-all; background:#222; padding:8px; border-radius:5px; display:block;">UQBY...ВАШ_АДРЕС</code>
             <input type="number" id="deposit-val" placeholder="Сумма TON">
-            <button class="btn-submit" onclick="handleDeposit()">ПОДТВЕРДИТЬ</button>
-            <button onclick="closeModal()" style="background:none; border:none; color:gray; margin-top:10px;">Закрыть</button>
+            <button class="btn-submit" onclick="handleDeposit()">Я ОПЛАТИЛ</button>
+            <button onclick="closeModal()" style="background:none; border:none; color:gray; margin-top:10px;">Отмена</button>
         </div>
     </div>
 
     <div id="withdrawModal" class="overlay">
         <div class="modal">
             <h3>Вывод TON</h3>
-            <input type="text" id="withdraw-address" placeholder="Ваш TON адрес (UQ...)">
+            <input type="text" id="withdraw-address" placeholder="Введите ваш TON адрес (UQ...)">
             <input type="number" id="withdraw-val" placeholder="Сумма TON">
             <button class="btn-submit" onclick="handleWithdraw()">ВЫВЕСТИ</button>
-            <button onclick="closeModal()" style="background:none; border:none; color:gray; margin-top:10px;">Закрыть</button>
+            <button onclick="closeModal()" style="background:none; border:none; color:gray; margin-top:10px;">Отмена</button>
         </div>
     </div>
 
