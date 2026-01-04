@@ -12,12 +12,22 @@
             <div id="main" class="screen active">
                 <div class="promo-badge" id="speed-badge">+1.0% в день</div>
                 <div class="balance" id="main-balance">10.000000000</div>
+                
                 <div class="ton-logo-circle">
                     <img src="https://ton.org/download/ton_symbol.png" width="80" alt="TON">
                 </div>
+
                 <div class="action-row">
                     <button class="btn-action" onclick="openModal('deposit')">ПОПОЛНИТЬ</button>
                     <button class="btn-action" onclick="openModal('withdraw')">ВЫВЕСТИ</button>
+                </div>
+
+                <div class="tasks-section" style="margin-top: 20px;">
+                    <h3 class="list-title">Задания</h3>
+                    <div class="task-card" onclick="window.open('https://t.me/sun_app_channel', '_blank')">
+                        <span>Подписаться на канал</span>
+                        <span class="task-reward">+0.5 TON</span>
+                    </div>
                 </div>
             </div>
 
@@ -26,14 +36,13 @@
                 <div class="ref-box">
                     <div id="wallet-balance-val" style="font-size: 24px; font-weight: bold;">10.0000 TON</div>
                 </div>
-                <h3 style="margin-top: 20px;">История</h3>
                 <div id="history-list"></div>
             </div>
 
             <div id="friends" class="screen">
-                <div class="ref-title">Рефералы</div>
+                <div class="ref-title">Реферальная программа</div>
                 <div class="ref-box">
-                    <div class="ref-link-field">Загрузка...</div>
+                    <div class="ref-link-field" id="ref-link">Загрузка ссылки...</div>
                     <div class="ref-buttons">
                         <button class="btn-invite" onclick="shareInvite()">Пригласить</button>
                         <button class="btn-copy" onclick="copyLink()">📋</button>
@@ -53,22 +62,22 @@
 
     <div id="depositModal" class="overlay">
         <div class="modal">
-            <h3>Пополнение</h3>
-            <p>Отправьте TON на адрес ниже:</p>
-            <code style="display:block; background:#222; padding:10px; word-break:break-all;">UQBY...вашадрес</code>
+            <h3>Пополнение TON</h3>
+            <p>Отправьте TON на этот адрес:</p>
+            <code style="word-break:break-all; background:#222; padding:5px;">UQBY-ВАШ-АДРЕС-КОШЕЛЬКА</code>
             <input type="number" id="deposit-val" placeholder="Сумма TON">
-            <button class="btn-submit" onclick="handleDeposit()">Я ОПЛАТИЛ</button>
-            <button onclick="closeModal()" class="btn-cancel">Закрыть</button>
+            <button class="btn-submit" onclick="handleDeposit()">ПОДТВЕРДИТЬ</button>
+            <button onclick="closeModal()" style="background:none; border:none; color:gray; margin-top:10px;">Закрыть</button>
         </div>
     </div>
 
     <div id="withdrawModal" class="overlay">
         <div class="modal">
-            <h3>Вывод средств</h3>
-            <input type="text" id="withdraw-address" placeholder="Адрес вашего TON кошелька">
+            <h3>Вывод TON</h3>
+            <input type="text" id="withdraw-address" placeholder="Ваш TON адрес (UQ...)">
             <input type="number" id="withdraw-val" placeholder="Сумма TON">
             <button class="btn-submit" onclick="handleWithdraw()">ВЫВЕСТИ</button>
-            <button onclick="closeModal()" class="btn-cancel">Закрыть</button>
+            <button onclick="closeModal()" style="background:none; border:none; color:gray; margin-top:10px;">Закрыть</button>
         </div>
     </div>
 
