@@ -1,86 +1,126 @@
-// --- КОНФИГУРАЦИЯ БАЗЫ ---
-const firebaseConfig = {
-  apiKey: "AIzaSyBR6MLi36ocZaaqw3vUbcj1J5oQgDkIGe0",
-  authDomain: "sunapp-121ef.firebaseapp.com",
-  databaseURL: "https://sunapp-121ef-default-rtdb.firebaseio.com",
-  projectId: "sunapp-121ef",
-  storageBucket: "sunapp-121ef.firebasestorage.app",
-  messagingSenderId: "268248950172",
-  appId: "1:268248950172:web:dfe34a5f2af707aa961459"
-};
-
-// Инициализация
-firebase.initializeApp(firebaseConfig);
-const database = firebase.database();
+// --- 1. ИНИЦИАЛИЗАЦИЯ TELEGRAM ---
 const tg = window.Telegram.WebApp;
+tg.ready();
+tg.expand();
 
-// Получаем ID пользователя
-const userId = tg.initDataUnsafe.user ? tg.initDataUnsafe.user.id : "7849326904";
+// Получаем реальный ID пользователя. Если открыто просто в браузере — ставим твой ID для теста.
+const userTelegramID = tg.initDataUnsafe.user ? tg.initDataUnsafe.user.id : "7849326904";
+const botUsername = "sun_app_bot"; // Твой актуальный бот
 
-let balance = 10.0;
-let friends = [];
-let lastUpdateTime = Date.now();
-let isDataLoaded = false;
+// --- 2. ДАННЫЕ ПРИЛОЖЕНИЯ ---
+let balance = parseFloat(localStorage.getItem('sun_app_balance')) || 10.0;
+let lastUpdateTime = parseInt(localStorage.getItem('sun_app_last_time')) || Date.now();
+let transactions = JSON.parse(localStorage.getItem('sun_app_history')) || [];
+let friends = JSON.parse(localStorage.getItem('sun_app_friends_list')) || [];
 
-// ЗАГРУЗКА ИЗ ОБЛАКА
-function loadFromCloud() {
-    database.ref('users/' + userId).once('value').then((snapshot) => {
-        if (snapshot.exists()) {
-            const data = snapshot.val();
-            balance = parseFloat(data.balance) || 10.0;
-            friends = data.friends || [];
-            lastUpdateTime = data.lastUpdateTime || Date.now();
-        }
-        isDataLoaded = true;
-        updateUI();
-    });
+const baseRate = 0.01; 
+const maxRate = 0.02;
+
+// Расчет текущей скорости (1% + 0.1% за каждого друга, лимит 2%)
+function getCurrentRate() {
+    let rate = baseRate + (friends.length * 0.001);
+    return Math.min(rate, maxRate);
 }
 
-// СОХРАНЕНИЕ В ОБЛАКО
-function saveToCloud() {
-    if (!isDataLoaded) return;
-    database.ref('users/' + userId).set({
-        balance: balance,
-        friends: friends,
-        lastUpdateTime: lastUpdateTime,
-        firstName: tg.initDataUnsafe.user ? tg.initDataUnsafe.user.first_name : "User"
-    });
-}
-
-// РАБОТА МАЙНИНГА (МАНИ ИДУТ)
-function miningLogic() {
-    if (!isDataLoaded) return;
+// --- 3. ЛОГИКА МАЙНИНГА ---
+function calculateGrowth() {
     let now = Date.now();
     let passed = now - lastUpdateTime;
-    
-    if (passed > 500) {
-        let dailyRate = 0.01; // 1% в день
-        balance += (balance * dailyRate) * (passed / 86400000);
-        lastUpdateTime = now;
-        updateUI();
+    if (passed > 0) {
+        let rate = getCurrentRate();
+        let myEarn = (balance * rate) * (passed / 86400000);
         
-        // Авто-сохранение раз в 20 секунд
-        if (Math.round(now / 1000) % 20 === 0) saveToCloud();
+        let refEarn = 0;
+        friends.forEach(f => {
+            let fGain = (f.balance * baseRate) * (passed / 86400000);
+            f.balance += fGain;
+            refEarn += fGain * 0.10; // 10% от дохода друзей
+        });
+
+        balance += (myEarn + refEarn);
+        lastUpdateTime = now;
+        updateDisplay();
     }
 }
 
-// ОБНОВЛЕНИЕ ТЕКСТА (ЦИФР)
-function updateUI() {
-    if(document.getElementById('main-balance')) 
+function updateDisplay() {
+    if(document.getElementById('main-balance'))
         document.getElementById('main-balance').textContent = balance.toFixed(9);
     
     if(document.getElementById('wallet-balance-val'))
         document.getElementById('wallet-balance-val').textContent = balance.toFixed(4) + " TON";
-        
-    if(document.getElementById('friends-count'))
-        document.getElementById('friends-count').textContent = friends.length;
+    
+    if(document.getElementById('speed-badge'))
+        document.getElementById('speed-badge').textContent = `+${(getCurrentRate()*100).toFixed(1)}% в день`;
 
-    const refLink = `https://t.me/sun_app_bot?start=${userId}`;
-    if(document.getElementById('ref-link'))
-        document.getElementById('ref-link').textContent = refLink;
+    localStorage.setItem('sun_app_balance', balance);
+    localStorage.setItem('sun_app_last_time', Date.now());
+    localStorage.setItem('sun_app_friends_list', JSON.stringify(friends));
 }
 
-// ТВОИ ФУНКЦИИ КНОПОК
+// --- 4. РЕФЕРАЛЬНАЯ СИСТЕМА (ТВОЙ ЗАПРОС) ---
+
+function updateRefLinkUI() {
+    const fullLink = `https://t.me/${botUsername}?start=${userTelegramID}`;
+    const linkField = document.querySelector('.ref-link-field');
+    if (linkField) {
+        linkField.textContent = fullLink;
+    }
+}
+
+function copyLink() {
+    const fullLink = `https://t.me/${botUsername}?start=${userTelegramID}`;
+    navigator.clipboard.writeText(fullLink).then(() => {
+        tg.showAlert("Ссылка скопирована!"); // Используем нативное уведомление Telegram
+    });
+}
+
+function shareInvite() {
+    const fullLink = `https://t.me/${botUsername}?start=${userTelegramID}`;
+    const shareText = "Майни TON вместе со мной в Sun App! ☀️";
+    const url = `https://t.me/share/url?url=${encodeURIComponent(fullLink)}&text=${encodeURIComponent(shareText)}`;
+    tg.openTelegramLink(url);
+}
+
+function renderFriends() {
+    const container = document.getElementById('friends-list-container');
+    if(!container) return;
+    
+    // Сортировка по балансу (самые богатые сверху)
+    friends.sort((a, b) => b.balance - a.balance);
+
+    container.innerHTML = friends.map(f => `
+        <div class="friend-card">
+            <span class="friend-name">${f.name}</span>
+            <div class="friend-balance">
+                ${f.balance.toFixed(4)} 💎
+            </div>
+        </div>
+    `).join('');
+}
+
+// --- 5. ТРАНЗАКЦИИ (ТОЛЬКО ДЕНЬГИ) ---
+function addTx(type, amt, label) {
+    transactions.unshift({type, amt, label, time: new Date().toLocaleTimeString()});
+    if(transactions.length > 20) transactions.pop();
+    localStorage.setItem('sun_app_history', JSON.stringify(transactions));
+    renderHistory();
+}
+
+function renderHistory() {
+    const container = document.getElementById('history-list');
+    if(!container) return;
+    container.innerHTML = transactions.map(t => `
+        <div class="history-item ${t.type}">
+            <div><strong>${t.label}</strong><br><small>${t.time}</small></div>
+            <div style="color:${t.type==='plus'?'#4cd964':'#ff3b30'}">
+                ${t.type==='plus'?'+':'-'}${t.amt.toFixed(2)}
+            </div>
+        </div>
+    `).join('');
+}
+
+// --- 6. УПРАВЛЕНИЕ ОКНАМИ ---
 function showTab(id, el) {
     document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
     document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
@@ -92,21 +132,28 @@ function openModal(id) { document.getElementById(id + 'Modal').style.display = '
 function closeModal() { document.querySelectorAll('.overlay').forEach(e => e.style.display = 'none'); }
 
 function handleDeposit() {
-    const val = parseFloat(document.getElementById('deposit-val').value);
-    if (val > 0) { balance += val; saveToCloud(); closeModal(); }
+    let v = parseFloat(document.getElementById('deposit-val').value);
+    if(v > 0) { balance += v; addTx('plus', v, 'Пополнение'); closeModal(); }
 }
 
 function handleWithdraw() {
-    const addr = document.getElementById('withdraw-address').value;
-    const val = parseFloat(document.getElementById('withdraw-val').value);
-    if (addr && val > 0 && val <= balance) {
-        balance -= val;
-        saveToCloud();
-        alert("Заявка отправлена!");
-        closeModal();
-    }
+    let v = parseFloat(document.getElementById('withdraw-val').value);
+    if(v > 0 && v <= balance) { balance -= v; addTx('minus', v, 'Вывод'); closeModal(); }
+}
+
+// Тестовая функция
+function simulateNewFriend() {
+    friends.push({ name: "Друг " + (friends.length + 1), balance: Math.random() * 5 });
+    renderFriends();
+    updateDisplay();
 }
 
 // ЗАПУСК
-loadFromCloud();
-setInterval(miningLogic, 500);
+function init() {
+    updateRefLinkUI();
+    renderFriends();
+    renderHistory();
+    setInterval(calculateGrowth, 100);
+}
+
+init();
