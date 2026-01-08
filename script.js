@@ -3,17 +3,10 @@ const tg = window.Telegram.WebApp;
 tg.ready();
 tg.expand();
 
-// Универсальная функция уведомлений для старых версий Telegram (6.0 и ниже)
+// Универсальная функция уведомлений, которая не вызывает ошибок в версии 6.0
 function showMessage(text) {
-    if (typeof tg.showAlert === 'function') {
-        try {
-            tg.showAlert(text);
-        } catch (e) {
-            alert(text);
-        }
-    } else {
-        alert(text);
-    }
+    // В старых версиях Telegram (как 6.0) используем обычный alert
+    alert(text);
 }
 
 // БЕЗОПАСНАЯ ИНИЦИАЛИЗАЦИЯ ADSGRAM
@@ -22,7 +15,7 @@ function initAds() {
     try {
         if (window.Adsgram) {
             AdController = window.Adsgram.init({ blockId: "20812" });
-            console.log("Adsgram initialized with ID 20812");
+            console.log("Adsgram initialized");
         }
     } catch (e) {
         console.error("Adsgram init error:", e);
@@ -56,7 +49,6 @@ function calculateGrowth() {
         let rate = getCurrentRate();
         let myEarn = (balance * rate) * (passed / 86400000);
         
-        // Реферальный доход (10%)
         friends.forEach(f => {
             let fGain = (f.balance * baseRate) * (passed / 86400000);
             f.balance += fGain;
@@ -85,14 +77,14 @@ function updateDisplay() {
     localStorage.setItem('sun_app_history', JSON.stringify(transactions));
 }
 
-// --- 4. ЗАРАБОТОК (РЕКЛАМА И ЗАДАНИЯ) ---
+// --- 4. ЗАДАНИЯ И РЕКЛАМА ---
 async function watchAd() {
     if (!AdController) {
-        initAds(); // Пробуем переинициализировать
+        initAds();
     }
 
     if (!AdController) {
-        showMessage("Рекламный блок еще загружается. Подождите 5 секунд.");
+        showMessage("Рекламный модуль загружается. Нажмите еще раз через 3 секунды.");
         return;
     }
 
@@ -107,14 +99,12 @@ async function watchAd() {
         updateDisplay();
         renderHistory();
         showMessage("Бонус +0.05 TON зачислен!");
-    }).catch((result) => {
-        console.error("Adsgram error:", result);
-        if (result.errorDescription === "No ads") {
-            showMessage("Сейчас нет доступной рекламы. Попробуйте через минуту.");
-        } else if (result.errorDescription === "User closed modal") {
-            // Пользователь просто закрыл окно, ничего не делаем
+    }).catch((err) => {
+        console.error("Ad error:", err);
+        if (err.errorDescription === "No ads") {
+            showMessage("Сейчас нет доступной рекламы. Попробуйте позже.");
         } else {
-            showMessage("Ошибка: " + (result.errorDescription || "Попробуйте позже"));
+            showMessage("Реклама не загрузилась. Попробуйте еще раз.");
         }
     });
 }
@@ -128,8 +118,8 @@ function doTask(taskId, link, reward) {
         tg.openTelegramLink(link);
     }
     
-    // Используем стандартный confirm для совместимости
-    if (confirm("Вы выполнили задание? Награда будет зачислена после проверки.")) {
+    // Используем стандартный confirm, так как Telegram 6.0 не поддерживает showConfirm
+    if (confirm("Вы выполнили задание?")) {
         balance += reward;
         completedTasks.push(taskId);
         transactions.unshift({
@@ -158,7 +148,7 @@ function renderTasks() {
     });
 }
 
-// --- 5. ОСТАЛЬНЫЕ ФУНКЦИИ ---
+// --- 5. НАВИГАЦИЯ И ИНТЕРФЕЙС ---
 function updateRefLinkUI() {
     const fullLink = `https://t.me/${botUsername}?start=${userTelegramID}`;
     const linkField = document.getElementById('ref-link-text');
@@ -203,8 +193,9 @@ function renderHistory() {
 function showTab(id, el) {
     document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
     document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
-    document.getElementById(id).classList.add('active');
-    el.classList.add('active');
+    const target = document.getElementById(id);
+    if(target) target.classList.add('active');
+    if(el) el.classList.add('active');
 }
 
 function openModal(id) { 
@@ -238,7 +229,6 @@ function handleWithdraw() {
     }
 }
 
-// ЗАПУСК ПРИЛОЖЕНИЯ
 function init() {
     updateRefLinkUI();
     renderFriends();
