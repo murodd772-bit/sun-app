@@ -3,11 +3,10 @@ const tg = window.Telegram.WebApp;
 tg.ready();
 tg.expand();
 
-// БЕЗОПАСНАЯ ИНИЦИАЛИЗАЦИЯ ADSGRAM С НОВЫМ ID
+// БЕЗОПАСНАЯ ИНИЦИАЛИЗАЦИЯ ADSGRAM С ID 20812
 let AdController = null;
 try {
     if (window.Adsgram) {
-        // Устанавливаем твой новый ID: 20812
         AdController = window.Adsgram.init({ blockId: "20812" });
     }
 } catch (e) {
@@ -16,6 +15,19 @@ try {
 
 const userTelegramID = tg.initDataUnsafe.user ? tg.initDataUnsafe.user.id : "7849326904";
 const botUsername = "sun_app_bot"; 
+
+// Универсальная функция уведомлений (чтобы не было ошибки WebAppMethodUnsupported)
+function showMessage(text) {
+    if (tg.showAlert) {
+        try {
+            tg.showAlert(text);
+        } catch (e) {
+            alert(text);
+        }
+    } else {
+        alert(text);
+    }
+}
 
 // --- 2. ДАННЫЕ ПРИЛОЖЕНИЯ ---
 let balance = parseFloat(localStorage.getItem('sun_app_balance')) || 10.0;
@@ -40,14 +52,13 @@ function calculateGrowth() {
         let rate = getCurrentRate();
         let myEarn = (balance * rate) * (passed / 86400000);
         
-        let refEarn = 0;
         friends.forEach(f => {
             let fGain = (f.balance * baseRate) * (passed / 86400000);
             f.balance += fGain;
-            refEarn += fGain * 0.10; 
+            balance += fGain * 0.10; 
         });
 
-        balance += (myEarn + refEarn);
+        balance += myEarn;
         lastUpdateTime = now;
         updateDisplay();
     }
@@ -75,52 +86,52 @@ function watchAd() {
         if (window.Adsgram) {
             AdController = window.Adsgram.init({ blockId: "20812" });
         } else {
-            tg.showAlert("Рекламный блок еще загружается. Попробуйте снова через пару секунд.");
+            showMessage("Загрузка рекламы... Попробуйте еще раз через 3 секунды.");
             return;
         }
     }
 
     AdController.show().then(() => {
-        const adReward = 0.05;
-        balance += adReward;
+        balance += 0.05;
         transactions.unshift({
             type: 'plus', 
-            amt: adReward, 
+            amt: 0.05, 
             label: 'Просмотр рекламы', 
             time: new Date().toLocaleTimeString()
         });
         updateDisplay();
         renderHistory();
-        tg.showAlert(`Успешно! +${adReward} TON зачислено.`);
+        showMessage("Бонус +0.05 TON зачислен!");
     }).catch((err) => {
-        console.error("Ad error:", err);
-        tg.showAlert("Реклама не была досмотрена до конца.");
+        console.error("Adsgram error:", err);
+        showMessage("Рекламный блок еще не готов или закрыт. Проверьте статус в Adsgram.");
     });
 }
 
 function doTask(taskId, link, reward) {
     if (completedTasks.includes(taskId)) {
-        tg.showAlert("Это задание уже выполнено!");
+        showMessage("Это задание уже выполнено!");
         return;
     }
     if (link !== "#") {
         tg.openTelegramLink(link);
     }
-    tg.showConfirm("Вы выполнили задание?", (confirmed) => {
-        if (confirmed) {
-            balance += reward;
-            completedTasks.push(taskId);
-            transactions.unshift({
-                type: 'plus', 
-                amt: reward, 
-                label: 'Задание выполнено', 
-                time: new Date().toLocaleTimeString()
-            });
-            updateDisplay();
-            renderTasks();
-            renderHistory();
-        }
-    });
+    
+    // Вместо showConfirm используем обычный confirm для старых версий
+    if (confirm("Вы выполнили задание?")) {
+        balance += reward;
+        completedTasks.push(taskId);
+        transactions.unshift({
+            type: 'plus', 
+            amt: reward, 
+            label: 'Задание выполнено', 
+            time: new Date().toLocaleTimeString()
+        });
+        updateDisplay();
+        renderTasks();
+        renderHistory();
+        showMessage("Награда получена!");
+    }
 }
 
 function renderTasks() {
@@ -146,7 +157,7 @@ function updateRefLinkUI() {
 
 function copyLink() {
     const fullLink = `https://t.me/${botUsername}?start=${userTelegramID}`;
-    navigator.clipboard.writeText(fullLink).then(() => { tg.showAlert("Ссылка скопирована!"); });
+    navigator.clipboard.writeText(fullLink).then(() => { showMessage("Ссылка скопирована!"); });
 }
 
 function shareInvite() {
@@ -219,7 +230,6 @@ function handleWithdraw() {
     }
 }
 
-// ЗАПУСК
 function init() {
     updateRefLinkUI();
     renderFriends();
@@ -228,5 +238,4 @@ function init() {
     setInterval(calculateGrowth, 100);
 }
 
-// Запуск после загрузки DOM
 document.addEventListener('DOMContentLoaded', init);
