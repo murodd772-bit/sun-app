@@ -55,4 +55,41 @@ body {
 .overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.8); display: none; align-items: center; justify-content: center; z-index: 2000; }
 .modal { background: #111; padding: 25px; border-radius: 20px; width: 85%; border: 1px solid #333; }
 .btn-submit { width: 100%; padding: 15px; background: var(--accent-blue); border: none; border-radius: 12px; color: white; font-weight: bold; margin-top: 10px; cursor: pointer; }
+
 .modal input { width: 100%; padding: 12px; background: #1c1c24; border: 1px solid #333; color: white; margin: 10px 0; border-radius: 12px; box-sizing: border-box; }
+
+/* Стили для заданий */
+.task-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    margin-bottom: 12px;
+    border-radius: 15px;
+    background: #0a0a0f;
+    border: 1px solid #1a1a1a;
+}
+.ad-special {
+    background: linear-gradient(90deg, #0a0a0f 0%, #1a1a2e 100%);
+    border: 1px solid var(--accent-blue);
+}
+.task-info { display: flex; flex-direction: column; }
+.task-title { font-weight: bold; font-size: 14px; color: white; }
+.task-reward { color: #4cd964; font-size: 13px; margin-top: 4px; font-weight: bold; }
+.task-btn { 
+    width: auto !important; 
+    padding: 8px 15px !important; 
+    font-size: 13px !important; 
+    margin: 0 !important; 
+    border-radius: 10px;
+    border: none;
+    background: var(--accent-blue);
+    color: white;
+    cursor: pointer;
+}
+.task-done { 
+    background: #222 !important; 
+    color: #555 !important; 
+    border: 1px solid #333 !important; 
+    cursor: default; 
+}
