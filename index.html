@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>SUN APP</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <script src="https://sad.adsgram.ai/js/adsgram-ad-sdk.js"></script>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -56,10 +57,32 @@
         </div>
 
         <div id="earn" class="screen">
-            <h2 style="margin-top:20px">Earn</h2>
-            <div class="card">
-                <div>Просмотр рекламы</div>
-                <button class="btn-submit" style="width:auto; padding:8px 15px;" onclick="alert('Скоро')">Start</button>
+            <h2 style="margin-top:20px">Заработок</h2>
+            
+            <div class="card task-card ad-special">
+                <div class="task-info">
+                    <div class="task-title">Просмотр рекламы</div>
+                    <div class="task-reward">+0.05 TON</div>
+                </div>
+                <button class="btn-submit task-btn" onclick="watchAd()">Смотреть</button>
+            </div>
+
+            <h3 style="margin: 20px 0 10px; font-size: 16px; color: var(--text-gray);">Обычные задания</h3>
+
+            <div id="task-sub" class="card task-card">
+                <div class="task-info">
+                    <div class="task-title">Подписка на канал</div>
+                    <div class="task-reward">+1.0 TON</div>
+                </div>
+                <button class="btn-submit task-btn" onclick="doTask('sub', 'https://t.me/твой_канал', 1.0)">Выполнить</button>
+            </div>
+
+            <div id="task-invite" class="card task-card">
+                <div class="task-info">
+                    <div class="task-title">Пригласить 3 друзей</div>
+                    <div class="task-reward">+2.5 TON</div>
+                </div>
+                <button class="btn-submit task-btn" onclick="doTask('invite', '#', 2.5)">Проверить</button>
             </div>
         </div>
     </div>
