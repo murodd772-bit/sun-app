@@ -3,22 +3,9 @@ const tg = window.Telegram.WebApp;
 tg.ready();
 tg.expand();
 
-// БЕЗОПАСНАЯ ИНИЦИАЛИЗАЦИЯ ADSGRAM С ID 20812
-let AdController = null;
-try {
-    if (window.Adsgram) {
-        AdController = window.Adsgram.init({ blockId: "20812" });
-    }
-} catch (e) {
-    console.error("Adsgram init error:", e);
-}
-
-const userTelegramID = tg.initDataUnsafe.user ? tg.initDataUnsafe.user.id : "7849326904";
-const botUsername = "sun_app_bot"; 
-
-// Универсальная функция уведомлений (чтобы не было ошибки WebAppMethodUnsupported)
+// Универсальная функция уведомлений для старых версий Telegram (6.0 и ниже)
 function showMessage(text) {
-    if (tg.showAlert) {
+    if (typeof tg.showAlert === 'function') {
         try {
             tg.showAlert(text);
         } catch (e) {
@@ -28,6 +15,23 @@ function showMessage(text) {
         alert(text);
     }
 }
+
+// БЕЗОПАСНАЯ ИНИЦИАЛИЗАЦИЯ ADSGRAM
+let AdController = null;
+function initAds() {
+    try {
+        if (window.Adsgram) {
+            AdController = window.Adsgram.init({ blockId: "20812" });
+            console.log("Adsgram initialized with ID 20812");
+        }
+    } catch (e) {
+        console.error("Adsgram init error:", e);
+    }
+}
+initAds();
+
+const userTelegramID = tg.initDataUnsafe.user ? tg.initDataUnsafe.user.id : "7849326904";
+const botUsername = "sun_app_bot"; 
 
 // --- 2. ДАННЫЕ ПРИЛОЖЕНИЯ ---
 let balance = parseFloat(localStorage.getItem('sun_app_balance')) || 10.0;
@@ -52,6 +56,7 @@ function calculateGrowth() {
         let rate = getCurrentRate();
         let myEarn = (balance * rate) * (passed / 86400000);
         
+        // Реферальный доход (10%)
         friends.forEach(f => {
             let fGain = (f.balance * baseRate) * (passed / 86400000);
             f.balance += fGain;
@@ -80,15 +85,15 @@ function updateDisplay() {
     localStorage.setItem('sun_app_history', JSON.stringify(transactions));
 }
 
-// --- 4. ЗАДАНИЯ И РЕКЛАМА ---
-function watchAd() {
+// --- 4. ЗАРАБОТОК (РЕКЛАМА И ЗАДАНИЯ) ---
+async function watchAd() {
     if (!AdController) {
-        if (window.Adsgram) {
-            AdController = window.Adsgram.init({ blockId: "20812" });
-        } else {
-            showMessage("Загрузка рекламы... Попробуйте еще раз через 3 секунды.");
-            return;
-        }
+        initAds(); // Пробуем переинициализировать
+    }
+
+    if (!AdController) {
+        showMessage("Рекламный блок еще загружается. Подождите 5 секунд.");
+        return;
     }
 
     AdController.show().then(() => {
@@ -102,23 +107,29 @@ function watchAd() {
         updateDisplay();
         renderHistory();
         showMessage("Бонус +0.05 TON зачислен!");
-    }).catch((err) => {
-        console.error("Adsgram error:", err);
-        showMessage("Рекламный блок еще не готов или закрыт. Проверьте статус в Adsgram.");
+    }).catch((result) => {
+        console.error("Adsgram error:", result);
+        if (result.errorDescription === "No ads") {
+            showMessage("Сейчас нет доступной рекламы. Попробуйте через минуту.");
+        } else if (result.errorDescription === "User closed modal") {
+            // Пользователь просто закрыл окно, ничего не делаем
+        } else {
+            showMessage("Ошибка: " + (result.errorDescription || "Попробуйте позже"));
+        }
     });
 }
 
 function doTask(taskId, link, reward) {
     if (completedTasks.includes(taskId)) {
-        showMessage("Это задание уже выполнено!");
+        showMessage("Задание уже выполнено!");
         return;
     }
     if (link !== "#") {
         tg.openTelegramLink(link);
     }
     
-    // Вместо showConfirm используем обычный confirm для старых версий
-    if (confirm("Вы выполнили задание?")) {
+    // Используем стандартный confirm для совместимости
+    if (confirm("Вы выполнили задание? Награда будет зачислена после проверки.")) {
         balance += reward;
         completedTasks.push(taskId);
         transactions.unshift({
@@ -130,7 +141,6 @@ function doTask(taskId, link, reward) {
         updateDisplay();
         renderTasks();
         renderHistory();
-        showMessage("Награда получена!");
     }
 }
 
@@ -148,7 +158,7 @@ function renderTasks() {
     });
 }
 
-// --- 5. ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ ---
+// --- 5. ОСТАЛЬНЫЕ ФУНКЦИИ ---
 function updateRefLinkUI() {
     const fullLink = `https://t.me/${botUsername}?start=${userTelegramID}`;
     const linkField = document.getElementById('ref-link-text');
@@ -169,9 +179,8 @@ function shareInvite() {
 
 function renderFriends() {
     const container = document.getElementById('friends-list-container');
-    const countDisplay = document.getElementById('friends-count');
     if(!container) return;
-    if(countDisplay) countDisplay.textContent = friends.length;
+    document.getElementById('friends-count').textContent = friends.length;
     container.innerHTML = friends.map(f => `
         <div class="friend-card">
             <span class="friend-name">${f.name}</span>
@@ -194,9 +203,8 @@ function renderHistory() {
 function showTab(id, el) {
     document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
     document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
-    const target = document.getElementById(id);
-    if(target) target.classList.add('active');
-    if(el) el.classList.add('active');
+    document.getElementById(id).classList.add('active');
+    el.classList.add('active');
 }
 
 function openModal(id) { 
@@ -230,6 +238,7 @@ function handleWithdraw() {
     }
 }
 
+// ЗАПУСК ПРИЛОЖЕНИЯ
 function init() {
     updateRefLinkUI();
     renderFriends();
