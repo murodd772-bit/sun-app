@@ -86,7 +86,7 @@ function doTask(taskId, link, reward) {
 // Функция для рекламы
 function watchAd() {
     // Вставь сюда ID, когда Adsgram его пришлет:
-    // const AdController = window.Adsgram.init({ blockId: "ТВОЙ_ID" });
+    // const AdController = window.Adsgram.init({ blockId: "20809" });
     
     tg.showAlert("Рекламный блок на модерации. Как только Adsgram одобрит заявку, здесь будет ролик!");
     
@@ -190,3 +190,4 @@ function init() {
 }
 
 init();
+
