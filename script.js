@@ -3,6 +3,9 @@ const tg = window.Telegram.WebApp;
 tg.ready();
 tg.expand();
 
+// Инициализация Adsgram с твоим ID
+const AdController = window.Adsgram.init({ blockId: "20809" });
+
 const userTelegramID = tg.initDataUnsafe.user ? tg.initDataUnsafe.user.id : "7849326904";
 const botUsername = "sun_app_bot"; 
 
@@ -11,7 +14,6 @@ let balance = parseFloat(localStorage.getItem('sun_app_balance')) || 10.0;
 let lastUpdateTime = parseInt(localStorage.getItem('sun_app_last_time')) || Date.now();
 let transactions = JSON.parse(localStorage.getItem('sun_app_history')) || [];
 let friends = JSON.parse(localStorage.getItem('sun_app_friends_list')) || [];
-// Хранилище выполненных заданий
 let completedTasks = JSON.parse(localStorage.getItem('sun_tasks_done')) || [];
 
 const baseRate = 0.01; 
@@ -57,11 +59,35 @@ function updateDisplay() {
     localStorage.setItem('sun_app_last_time', lastUpdateTime);
     localStorage.setItem('sun_app_friends_list', JSON.stringify(friends));
     localStorage.setItem('sun_tasks_done', JSON.stringify(completedTasks));
+    localStorage.setItem('sun_app_history', JSON.stringify(transactions));
 }
 
 // --- 4. ЗАДАНИЯ И РЕКЛАМА ---
 
-// Функция для обычных заданий
+function watchAd() {
+    // Запуск реальной рекламы Adsgram
+    AdController.show().then((result) => {
+        // Успешный просмотр
+        const adReward = 0.05;
+        balance += adReward;
+        
+        transactions.unshift({
+            type: 'plus', 
+            amt: adReward, 
+            label: 'Просмотр рекламы', 
+            time: new Date().toLocaleTimeString()
+        });
+
+        updateDisplay();
+        renderHistory();
+        tg.showAlert(`Бонус +${adReward} TON зачислен!`);
+    }).catch((result) => {
+        // Ошибка или закрытие
+        console.error("Adsgram error:", result);
+        tg.showAlert("Реклама не досмотрена. Попробуйте еще раз.");
+    });
+}
+
 function doTask(taskId, link, reward) {
     if (completedTasks.includes(taskId)) {
         tg.showAlert("Это задание уже выполнено!");
@@ -76,23 +102,20 @@ function doTask(taskId, link, reward) {
         if (confirmed) {
             balance += reward;
             completedTasks.push(taskId);
+            
+            transactions.unshift({
+                type: 'plus', 
+                amt: reward, 
+                label: 'Задание выполнено', 
+                time: new Date().toLocaleTimeString()
+            });
+
             updateDisplay();
             renderTasks();
+            renderHistory();
             tg.showAlert(`Поздравляем! Вам начислено ${reward} TON`);
         }
     });
-}
-
-// Функция для рекламы
-function watchAd() {
-    // Вставь сюда ID, когда Adsgram его пришлет:
-    // const AdController = window.Adsgram.init({ blockId: "20809" });
-    
-    tg.showAlert("Рекламный блок на модерации. Как только Adsgram одобрит заявку, здесь будет ролик!");
-    
-    // Временная награда для теста
-    // balance += 0.05;
-    // updateDisplay();
 }
 
 function renderTasks() {
@@ -190,4 +213,3 @@ function init() {
 }
 
 init();
-
