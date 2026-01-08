@@ -3,8 +3,15 @@ const tg = window.Telegram.WebApp;
 tg.ready();
 tg.expand();
 
-// Инициализация Adsgram с твоим ID
-const AdController = window.Adsgram.init({ blockId: "20809" });
+// БЕЗОПАСНАЯ ИНИЦИАЛИЗАЦИЯ ADSGRAM
+let AdController = null;
+try {
+    if (window.Adsgram) {
+        AdController = window.Adsgram.init({ blockId: "20809" });
+    }
+} catch (e) {
+    console.error("Adsgram init error:", e);
+}
 
 const userTelegramID = tg.initDataUnsafe.user ? tg.initDataUnsafe.user.id : "7849326904";
 const botUsername = "sun_app_bot"; 
@@ -46,14 +53,13 @@ function calculateGrowth() {
 }
 
 function updateDisplay() {
-    if(document.getElementById('main-balance'))
-        document.getElementById('main-balance').textContent = balance.toFixed(9);
-    
-    if(document.getElementById('wallet-balance-val'))
-        document.getElementById('wallet-balance-val').textContent = balance.toFixed(4) + " TON";
-    
-    if(document.getElementById('speed-badge'))
-        document.getElementById('speed-badge').textContent = `+${(getCurrentRate()*100).toFixed(1)}% в день`;
+    const mainBal = document.getElementById('main-balance');
+    const wallBal = document.getElementById('wallet-balance-val');
+    const speedB = document.getElementById('speed-badge');
+
+    if(mainBal) mainBal.textContent = balance.toFixed(9);
+    if(wallBal) wallBal.textContent = balance.toFixed(4) + " TON";
+    if(speedB) speedB.textContent = `+${(getCurrentRate()*100).toFixed(1)}% в день`;
 
     localStorage.setItem('sun_app_balance', balance);
     localStorage.setItem('sun_app_last_time', lastUpdateTime);
@@ -64,7 +70,17 @@ function updateDisplay() {
 
 // --- 4. ЗАДАНИЯ И РЕКЛАМА ---
 function watchAd() {
-    AdController.show().then((result) => {
+    if (!AdController) {
+        // Пробуем инициализировать еще раз, если при старте не вышло
+        if (window.Adsgram) {
+            AdController = window.Adsgram.init({ blockId: "20809" });
+        } else {
+            tg.showAlert("Рекламный модуль еще не готов. Попробуйте через 5 секунд.");
+            return;
+        }
+    }
+
+    AdController.show().then(() => {
         const adReward = 0.05;
         balance += adReward;
         transactions.unshift({
@@ -75,10 +91,10 @@ function watchAd() {
         });
         updateDisplay();
         renderHistory();
-        tg.showAlert(`Бонус +${adReward} TON зачислен!`);
-    }).catch((result) => {
-        console.error("Adsgram error:", result);
-        tg.showAlert("Реклама не досмотрена или ошибка загрузки.");
+        tg.showAlert(`Успешно! +${adReward} TON зачислено.`);
+    }).catch((err) => {
+        console.error("Ad error:", err);
+        tg.showAlert("Реклама не была досмотрена.");
     });
 }
 
@@ -103,7 +119,6 @@ function doTask(taskId, link, reward) {
             updateDisplay();
             renderTasks();
             renderHistory();
-            tg.showAlert(`Поздравляем! Вам начислено ${reward} TON`);
         }
     });
 }
@@ -146,7 +161,6 @@ function renderFriends() {
     const countDisplay = document.getElementById('friends-count');
     if(!container) return;
     if(countDisplay) countDisplay.textContent = friends.length;
-    friends.sort((a, b) => b.balance - a.balance);
     container.innerHTML = friends.map(f => `
         <div class="friend-card">
             <span class="friend-name">${f.name}</span>
@@ -169,8 +183,9 @@ function renderHistory() {
 function showTab(id, el) {
     document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
     document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
-    document.getElementById(id).classList.add('active');
-    el.classList.add('active');
+    const target = document.getElementById(id);
+    if(target) target.classList.add('active');
+    if(el) el.classList.add('active');
 }
 
 function openModal(id) { 
@@ -183,28 +198,24 @@ function closeModal() {
 }
 
 function handleDeposit() {
-    let input = document.getElementById('deposit-val');
-    let v = parseFloat(input.value);
+    const inp = document.getElementById('deposit-val');
+    const v = parseFloat(inp.value);
     if(v > 0) { 
         balance += v; 
         transactions.unshift({type:'plus', amt:v, label:'Пополнение', time: new Date().toLocaleTimeString()});
-        input.value = "";
+        inp.value = "";
         closeModal(); renderHistory(); updateDisplay();
-    } else {
-        tg.showAlert("Введите сумму пополнения");
     }
 }
 
 function handleWithdraw() {
-    let input = document.getElementById('withdraw-val');
-    let v = parseFloat(input.value);
+    const inp = document.getElementById('withdraw-val');
+    const v = parseFloat(inp.value);
     if(v > 0 && v <= balance) { 
         balance -= v; 
         transactions.unshift({type:'minus', amt:v, label:'Вывод', time: new Date().toLocaleTimeString()});
-        input.value = "";
+        inp.value = "";
         closeModal(); renderHistory(); updateDisplay();
-    } else {
-        tg.showAlert("Недостаточно средств или неверная сумма");
     }
 }
 
@@ -217,5 +228,5 @@ function init() {
     setInterval(calculateGrowth, 100);
 }
 
-// Важно: вызываем init после того как всё загрузится
-window.onload = init;
+// Запуск после загрузки DOM
+document.addEventListener('DOMContentLoaded', init);
