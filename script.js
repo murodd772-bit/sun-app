@@ -63,28 +63,22 @@ function updateDisplay() {
 }
 
 // --- 4. ЗАДАНИЯ И РЕКЛАМА ---
-
 function watchAd() {
-    // Запуск реальной рекламы Adsgram
     AdController.show().then((result) => {
-        // Успешный просмотр
         const adReward = 0.05;
         balance += adReward;
-        
         transactions.unshift({
             type: 'plus', 
             amt: adReward, 
             label: 'Просмотр рекламы', 
             time: new Date().toLocaleTimeString()
         });
-
         updateDisplay();
         renderHistory();
         tg.showAlert(`Бонус +${adReward} TON зачислен!`);
     }).catch((result) => {
-        // Ошибка или закрытие
         console.error("Adsgram error:", result);
-        tg.showAlert("Реклама не досмотрена. Попробуйте еще раз.");
+        tg.showAlert("Реклама не досмотрена или ошибка загрузки.");
     });
 }
 
@@ -93,23 +87,19 @@ function doTask(taskId, link, reward) {
         tg.showAlert("Это задание уже выполнено!");
         return;
     }
-
     if (link !== "#") {
         tg.openTelegramLink(link);
     }
-
     tg.showConfirm("Вы выполнили задание?", (confirmed) => {
         if (confirmed) {
             balance += reward;
             completedTasks.push(taskId);
-            
             transactions.unshift({
                 type: 'plus', 
                 amt: reward, 
                 label: 'Задание выполнено', 
                 time: new Date().toLocaleTimeString()
             });
-
             updateDisplay();
             renderTasks();
             renderHistory();
@@ -132,7 +122,7 @@ function renderTasks() {
     });
 }
 
-// --- 5. ОСТАЛЬНАЯ ЛОГИКА ---
+// --- 5. ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ ---
 function updateRefLinkUI() {
     const fullLink = `https://t.me/${botUsername}?start=${userTelegramID}`;
     const linkField = document.getElementById('ref-link-text');
@@ -183,27 +173,42 @@ function showTab(id, el) {
     el.classList.add('active');
 }
 
-function openModal(id) { document.getElementById(id + 'Modal').style.display = 'flex'; }
-function closeModal() { document.querySelectorAll('.overlay').forEach(e => e.style.display = 'none'); }
+function openModal(id) { 
+    const modal = document.getElementById(id + 'Modal');
+    if(modal) modal.style.display = 'flex'; 
+}
+
+function closeModal() { 
+    document.querySelectorAll('.overlay').forEach(e => e.style.display = 'none'); 
+}
 
 function handleDeposit() {
-    let v = parseFloat(document.getElementById('deposit-val').value);
+    let input = document.getElementById('deposit-val');
+    let v = parseFloat(input.value);
     if(v > 0) { 
         balance += v; 
         transactions.unshift({type:'plus', amt:v, label:'Пополнение', time: new Date().toLocaleTimeString()});
+        input.value = "";
         closeModal(); renderHistory(); updateDisplay();
+    } else {
+        tg.showAlert("Введите сумму пополнения");
     }
 }
 
 function handleWithdraw() {
-    let v = parseFloat(document.getElementById('withdraw-val').value);
+    let input = document.getElementById('withdraw-val');
+    let v = parseFloat(input.value);
     if(v > 0 && v <= balance) { 
         balance -= v; 
         transactions.unshift({type:'minus', amt:v, label:'Вывод', time: new Date().toLocaleTimeString()});
+        input.value = "";
         closeModal(); renderHistory(); updateDisplay();
+    } else {
+        tg.showAlert("Недостаточно средств или неверная сумма");
     }
 }
 
+// ЗАПУСК
 function init() {
     updateRefLinkUI();
     renderFriends();
@@ -212,4 +217,5 @@ function init() {
     setInterval(calculateGrowth, 100);
 }
 
-init();
+// Важно: вызываем init после того как всё загрузится
+window.onload = init;
