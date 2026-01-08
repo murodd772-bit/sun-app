@@ -3,11 +3,12 @@ const tg = window.Telegram.WebApp;
 tg.ready();
 tg.expand();
 
-// БЕЗОПАСНАЯ ИНИЦИАЛИЗАЦИЯ ADSGRAM
+// БЕЗОПАСНАЯ ИНИЦИАЛИЗАЦИЯ ADSGRAM С НОВЫМ ID
 let AdController = null;
 try {
     if (window.Adsgram) {
-        AdController = window.Adsgram.init({ blockId: "20809" });
+        // Устанавливаем твой новый ID: 20812
+        AdController = window.Adsgram.init({ blockId: "20812" });
     }
 } catch (e) {
     console.error("Adsgram init error:", e);
@@ -71,11 +72,10 @@ function updateDisplay() {
 // --- 4. ЗАДАНИЯ И РЕКЛАМА ---
 function watchAd() {
     if (!AdController) {
-        // Пробуем инициализировать еще раз, если при старте не вышло
         if (window.Adsgram) {
-            AdController = window.Adsgram.init({ blockId: "20809" });
+            AdController = window.Adsgram.init({ blockId: "20812" });
         } else {
-            tg.showAlert("Рекламный модуль еще не готов. Попробуйте через 5 секунд.");
+            tg.showAlert("Рекламный блок еще загружается. Попробуйте снова через пару секунд.");
             return;
         }
     }
@@ -94,7 +94,7 @@ function watchAd() {
         tg.showAlert(`Успешно! +${adReward} TON зачислено.`);
     }).catch((err) => {
         console.error("Ad error:", err);
-        tg.showAlert("Реклама не была досмотрена.");
+        tg.showAlert("Реклама не была досмотрена до конца.");
     });
 }
 
