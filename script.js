@@ -11,6 +11,8 @@ let balance = parseFloat(localStorage.getItem('sun_app_balance')) || 10.0;
 let lastUpdateTime = parseInt(localStorage.getItem('sun_app_last_time')) || Date.now();
 let transactions = JSON.parse(localStorage.getItem('sun_app_history')) || [];
 let friends = JSON.parse(localStorage.getItem('sun_app_friends_list')) || [];
+// Хранилище выполненных заданий
+let completedTasks = JSON.parse(localStorage.getItem('sun_tasks_done')) || [];
 
 const baseRate = 0.01; 
 const maxRate = 0.02;
@@ -54,22 +56,69 @@ function updateDisplay() {
     localStorage.setItem('sun_app_balance', balance);
     localStorage.setItem('sun_app_last_time', lastUpdateTime);
     localStorage.setItem('sun_app_friends_list', JSON.stringify(friends));
+    localStorage.setItem('sun_tasks_done', JSON.stringify(completedTasks));
 }
 
-// --- 4. РЕФЕРАЛЬНАЯ СИСТЕМА ---
+// --- 4. ЗАДАНИЯ И РЕКЛАМА ---
+
+// Функция для обычных заданий
+function doTask(taskId, link, reward) {
+    if (completedTasks.includes(taskId)) {
+        tg.showAlert("Это задание уже выполнено!");
+        return;
+    }
+
+    if (link !== "#") {
+        tg.openTelegramLink(link);
+    }
+
+    tg.showConfirm("Вы выполнили задание?", (confirmed) => {
+        if (confirmed) {
+            balance += reward;
+            completedTasks.push(taskId);
+            updateDisplay();
+            renderTasks();
+            tg.showAlert(`Поздравляем! Вам начислено ${reward} TON`);
+        }
+    });
+}
+
+// Функция для рекламы
+function watchAd() {
+    // Вставь сюда ID, когда Adsgram его пришлет:
+    // const AdController = window.Adsgram.init({ blockId: "ТВОЙ_ID" });
+    
+    tg.showAlert("Рекламный блок на модерации. Как только Adsgram одобрит заявку, здесь будет ролик!");
+    
+    // Временная награда для теста
+    // balance += 0.05;
+    // updateDisplay();
+}
+
+function renderTasks() {
+    completedTasks.forEach(id => {
+        const card = document.getElementById(`task-${id}`);
+        if (card) {
+            const btn = card.querySelector('.task-btn');
+            if (btn) {
+                btn.textContent = "Готово";
+                btn.classList.add('task-done');
+                btn.onclick = null;
+            }
+        }
+    });
+}
+
+// --- 5. ОСТАЛЬНАЯ ЛОГИКА ---
 function updateRefLinkUI() {
     const fullLink = `https://t.me/${botUsername}?start=${userTelegramID}`;
     const linkField = document.getElementById('ref-link-text');
-    if (linkField) {
-        linkField.textContent = fullLink;
-    }
+    if (linkField) { linkField.textContent = fullLink; }
 }
 
 function copyLink() {
     const fullLink = `https://t.me/${botUsername}?start=${userTelegramID}`;
-    navigator.clipboard.writeText(fullLink).then(() => {
-        tg.showAlert("Ссылка скопирована!");
-    });
+    navigator.clipboard.writeText(fullLink).then(() => { tg.showAlert("Ссылка скопирована!"); });
 }
 
 function shareInvite() {
@@ -83,12 +132,8 @@ function renderFriends() {
     const container = document.getElementById('friends-list-container');
     const countDisplay = document.getElementById('friends-count');
     if(!container) return;
-    
-    // Обновляем счетчик
     if(countDisplay) countDisplay.textContent = friends.length;
-
     friends.sort((a, b) => b.balance - a.balance);
-
     container.innerHTML = friends.map(f => `
         <div class="friend-card">
             <span class="friend-name">${f.name}</span>
@@ -97,16 +142,13 @@ function renderFriends() {
     `).join('');
 }
 
-// --- 5. ТРАНЗАКЦИИ И ОКНА ---
 function renderHistory() {
     const container = document.getElementById('history-list');
     if(!container) return;
     container.innerHTML = transactions.map(t => `
         <div class="history-item ${t.type}">
             <div><strong>${t.label}</strong><br><small>${t.time}</small></div>
-            <div style="color:${t.type==='plus'?'#4cd964':'#ff3b30'}">
-                ${t.type==='plus'?'+':'-'}${t.amt.toFixed(2)}
-            </div>
+            <div style="color:${t.type==='plus'?'#4cd964':'#ff3b30'}">${t.type==='plus'?'+':'-'}${t.amt.toFixed(2)}</div>
         </div>
     `).join('');
 }
@@ -126,8 +168,7 @@ function handleDeposit() {
     if(v > 0) { 
         balance += v; 
         transactions.unshift({type:'plus', amt:v, label:'Пополнение', time: new Date().toLocaleTimeString()});
-        closeModal(); 
-        renderHistory();
+        closeModal(); renderHistory(); updateDisplay();
     }
 }
 
@@ -136,16 +177,15 @@ function handleWithdraw() {
     if(v > 0 && v <= balance) { 
         balance -= v; 
         transactions.unshift({type:'minus', amt:v, label:'Вывод', time: new Date().toLocaleTimeString()});
-        closeModal(); 
-        renderHistory();
+        closeModal(); renderHistory(); updateDisplay();
     }
 }
 
-// ЗАПУСК
 function init() {
     updateRefLinkUI();
     renderFriends();
     renderHistory();
+    renderTasks();
     setInterval(calculateGrowth, 100);
 }
 
