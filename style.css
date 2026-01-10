@@ -4,6 +4,7 @@
     --card-bg: #0a0a0f;
     --text-gray: #a1a1a1;
     --ref-purple: #4231a5;
+    --energy-yellow: #ffcf2d; /* Цвет для энергии */
 }
 
 body {
@@ -13,111 +14,60 @@ body {
 
 .app-container { display: flex; flex-direction: column; height: 100%; max-width: 500px; margin: 0 auto; position: relative; }
 .screens-wrapper { flex: 1; position: relative; }
-.screen { position: absolute; inset: 0; display: none; padding: 20px; flex-direction: column; overflow-y: auto; }
+.screen { position: absolute; inset: 0; display: none; padding: 20px; flex-direction: column; overflow-y: auto; padding-bottom: 100px; }
 .screen.active { display: flex; }
 
-/* Дизайн реферальной части */
-.ref-info { font-size: 14px; line-height: 1.4; color: #eee; margin-bottom: 20px; }
-.ref-box { background: #0c162d; border-radius: 20px; padding: 20px; border: 1px solid #1a2a4d; margin-bottom: 25px; }
-.ref-title { font-size: 22px; font-weight: bold; margin-bottom: 15px; }
-.ref-link-field { background: #162447; padding: 15px; border-radius: 12px; font-size: 14px; color: #8ba3e0; word-break: break-all; margin-bottom: 15px; }
-.ref-buttons { display: flex; gap: 10px; }
-.btn-invite { flex: 1; background: #3e59b5; border: none; border-radius: 12px; color: white; font-weight: bold; display: flex; align-items: center; justify-content: center; height: 50px; cursor: pointer; }
-.btn-copy { width: 50px; background: #3e59b5; border: none; border-radius: 12px; display: flex; align-items: center; justify-content: center; cursor: pointer; }
-
-.list-title { font-size: 24px; margin-bottom: 15px; }
-.friend-card {
-    background: linear-gradient(90deg, #1a0b35, #0a0a0f);
-    padding: 15px; border-radius: 12px; margin-bottom: 10px;
-    display: flex; justify-content: space-between; align-items: center;
-    border: 1px solid #321b5e;
-}
-.friend-name { font-size: 16px; font-weight: 500; }
-.friend-balance { display: flex; align-items: center; gap: 5px; font-weight: bold; }
-.ton-icon-small { width: 18px; height: 18px; background: #0088cc; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 10px; }
-
-/* Остальные стили */
-.promo-badge { background: rgba(45, 91, 255, 0.1); border-bottom: 2px solid var(--accent-blue); padding: 8px 20px; border-radius: 12px; margin-top: 15px; width: fit-content; align-self: center; }
-.balance { font-size: 40px; font-weight: 800; margin: 25px 0; text-align: center; }
-.ton-logo-circle { width: 200px; height: 200px; background: var(--accent-blue); border-radius: 50%; align-self: center; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 30px rgba(45,91,255,0.4); margin-bottom: 40px; }
-.action-row { display: flex; gap: 10px; margin-top: auto; padding-bottom: 10px; }
-.btn-action { flex: 1; padding: 18px; border-radius: 18px; border: 1px solid #333; background: #111; color: white; font-weight: bold; font-size: 16px; }
-
-.history-item { background: #0f0f14; padding: 15px; border-radius: 15px; margin-bottom: 10px; display: flex; justify-content: space-between; border-left: 4px solid #333; }
-.history-item.plus { border-left-color: #4cd964; }
-.history-item.minus { border-left-color: #ff3b30; }
-
-.nav-bar { background: #08080c; display: flex; justify-content: space-around; padding: 10px 0 30px; border-top: 1px solid #1a1a1a; }
-.nav-item { color: #555; display: flex; flex-direction: column; align-items: center; font-size: 11px; cursor: pointer; }
-.nav-item.active { color: white; }
-.nav-icon { width: 24px; fill: currentColor; margin-bottom: 4px; }
-
-.overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.8); display: none; align-items: center; justify-content: center; z-index: 2000; }
-.modal { background: #111; padding: 25px; border-radius: 20px; width: 85%; border: 1px solid #333; }
-.btn-submit { width: 100%; padding: 15px; background: var(--accent-blue); border: none; border-radius: 12px; color: white; font-weight: bold; margin-top: 10px; cursor: pointer; }
-
-.modal input { width: 100%; padding: 12px; background: #1c1c24; border: 1px solid #333; color: white; margin: 10px 0; border-radius: 12px; box-sizing: border-box; }
-
-/* Стили для заданий */
-.task-card {
+/* ЭНЕРГИЯ (НОВОЕ) */
+.energy-container {
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    padding: 15px;
-    margin-bottom: 12px;
-    border-radius: 15px;
-    background: #0a0a0f;
-    border: 1px solid #1a1a1a;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 15px;
+    font-weight: bold;
+    color: var(--energy-yellow);
 }
-.ad-special {
-    background: linear-gradient(90deg, #0a0a0f 0%, #1a1a2e 100%);
-    border: 1px solid var(--accent-blue);
-}
-.task-info { display: flex; flex-direction: column; }
-.task-title { font-weight: bold; font-size: 14px; color: white; }
-.task-reward { color: #4cd964; font-size: 13px; margin-top: 4px; font-weight: bold; }
-.task-btn { 
-    width: auto !important; 
-    padding: 8px 15px !important; 
-    font-size: 13px !important; 
-    margin: 0 !important; 
+.energy-bar {
+    width: 60%;
+    height: 8px;
+    background: #1c1c24;
     border-radius: 10px;
-    border: none;
-    background: var(--accent-blue);
-    color: white;
-    cursor: pointer;
+    overflow: hidden;
+    border: 1px solid #333;
 }
-.task-done { 
-    background: #222 !important; 
-    color: #555 !important; 
-    border: 1px solid #333 !important; 
-    cursor: default; 
+.energy-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #ffcf2d, #ff9500);
+    width: 100%; /* Управляется через JS */
+    transition: width 0.3s ease;
 }
-/* Кнопки на главной странице */
-.main-action-area {
+
+/* ГЛАВНАЯ: КНОПКИ (Желтая зона) */
+.main-top-actions {
     display: flex;
     gap: 10px;
-    margin-top: 25px;
-    align-items: center;
+    margin-top: 20px;
+    width: 100%;
 }
-
-.btn-main-primary {
+.btn-main-act {
     flex: 2;
-    background: var(--accent-blue);
-    border: none;
-    border-radius: 12px;
-    padding: 15px;
+    background: #1c1c24;
+    border: 1px solid #333;
+    border-radius: 14px;
+    padding: 16px;
     color: white;
     font-weight: bold;
     cursor: pointer;
+    transition: 0.2s;
 }
+.btn-main-act:active { transform: scale(0.95); background: #252530; }
 
-.btn-main-history {
+.btn-side-history {
     flex: 0.6;
-    height: 50px;
+    height: 52px;
     background: #1c1c24;
     border: 1px solid #333;
-    border-radius: 12px;
+    border-radius: 14px;
     color: var(--accent-blue);
     display: flex;
     align-items: center;
@@ -125,89 +75,55 @@ body {
     font-size: 20px;
 }
 
-/* Нижняя панель */
-.nav-bar-modern {
-    display: flex;
-    justify-content: space-around;
-    align-items: flex-end;
-    background: #08080c;
-    height: 75px;
-    border-top: 1px solid #1a1a1a;
-    padding-bottom: 15px;
-}
-
-.nav-item {
-    flex: 1;
-    text-align: center;
-    color: #555;
-    font-size: 10px;
-    transition: 0.3s;
-}
-
-.nav-item.active { color: var(--accent-blue); }
-.nav-item i { font-size: 20px; display: block; margin: 0 auto 5px; }
-
-/* Кнопка ИГРЫ в центре */
-.nav-center-item {
-    position: relative;
-    top: -15px;
-}
-
-.games-icon-wrap {
-    width: 55px;
-    height: 55px;
-    background: #1c1c24;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: 3px solid #08080c;
-    margin: 0 auto 5px;
-    box-shadow: 0 0 15px rgba(45, 91, 255, 0.2);
-}
-
-.nav-item.active .games-icon-wrap { background: var(--accent-blue); }
-.nav-item.active .games-icon-wrap i { color: white; }
-
-/* Экран истории и кнопка Назад */
-.screen-header { display: flex; align-items: center; gap: 15px; margin-bottom: 20px; }
-.back-btn { background: none; border: none; color: white; font-size: 20px; cursor: pointer; }
-
-/* Карточка рейтинга пользователя */
-.user-rank-card {
-    background: linear-gradient(135deg, #1c1c24 0%, #0a0a0f 100%);
-    padding: 20px;
-    border-radius: 20px;
-    border: 1px solid var(--accent-blue);
-    margin-bottom: 20px;
-    display: flex;
-    justify-content: space-between;
-}
-.rank-info span { color: var(--accent-blue); font-weight: bold; }
-
-/* Список рейтинга */
+/* РЕЙТИНГ (Зеленая зона) */
+.rating-list { display: flex; flex-direction: column; gap: 10px; margin-top: 10px; }
 .rating-item {
-    display: flex;
-    align-items: center;
-    background: #0f0f14;
-    padding: 15px;
-    border-radius: 15px;
-    margin-bottom: 8px;
-    border: 1px solid #1a1a1a;
+    display: flex; align-items: center;
+    background: #0f0f14; padding: 15px;
+    border-radius: 16px; border: 1px solid #1a1a1a;
 }
-.rating-item .place { width: 30px; font-weight: bold; color: var(--accent-blue); }
-.rating-item .name { flex: 1; margin-left: 10px; }
+.rating-item .place { width: 35px; font-weight: bold; color: var(--accent-blue); font-size: 18px; }
+.rating-item .name { flex: 1; font-weight: 500; }
 .rating-item .val { font-weight: bold; color: #4cd964; }
 
-/* Топ-места */
-.top-1 { border: 1px solid #ffd700; background: rgba(255, 215, 0, 0.05); }
-.top-2 { border: 1px solid #c0c0c0; background: rgba(192, 192, 192, 0.05); }
+.top-1 { border: 1px solid gold !important; background: rgba(255, 215, 0, 0.05) !important; }
+.top-2 { border: 1px solid #c0c0c0 !important; }
 
-/* Заглушка для игр */
-.card-game-soon {
-    text-align: center;
-    padding: 60px 20px;
-    background: #0a0a0f;
-    border-radius: 30px;
-    border: 1px dashed #333;
+/* НИЖНЕЕ МЕНЮ (Красная зона - Игры) */
+.nav-bar-new {
+    display: flex; justify-content: space-around; align-items: center;
+    background: #08080c; height: 80px; border-top: 1px solid #1a1a1a;
+    padding-bottom: 15px; z-index: 1000;
 }
+.nav-item {
+    flex: 1; text-align: center; color: #555; font-size: 10px;
+    display: flex; flex-direction: column; align-items: center;
+}
+.nav-item.active { color: var(--accent-blue); }
+.nav-item i { font-size: 20px; margin-bottom: 5px; }
+
+.nav-games-center { position: relative; top: -18px; }
+.games-icon-circle {
+    width: 60px; height: 60px; background: #1c1c24;
+    border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    border: 4px solid #08080c; box-shadow: 0 0 20px rgba(45, 91, 255, 0.3);
+    margin-bottom: 5px;
+}
+.nav-item.active .games-icon-circle { background: var(--accent-blue); color: white; }
+
+/* ОСТАЛЬНОЕ (Твой базовый код) */
+.promo-badge { background: rgba(45, 91, 255, 0.1); border-bottom: 2px solid var(--accent-blue); padding: 8px 20px; border-radius: 12px; margin-top: 10px; align-self: center; font-weight: bold; }
+.balance { font-size: 42px; font-weight: 800; margin: 20px 0; text-align: center; letter-spacing: -1px; }
+.ton-logo-circle { width: 180px; height: 180px; background: var(--accent-blue); border-radius: 50%; align-self: center; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 40px rgba(45,91,255,0.4); margin-bottom: 20px; }
+
+.history-item { background: #0f0f14; padding: 15px; border-radius: 15px; margin-bottom: 10px; display: flex; justify-content: space-between; border-left: 4px solid #333; }
+.history-item.plus { border-left-color: #4cd964; }
+.history-item.minus { border-left-color: #ff3b30; }
+
+.overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.85); display: none; align-items: center; justify-content: center; z-index: 2000; }
+.modal { background: #111; padding: 25px; border-radius: 25px; width: 85%; border: 1px solid #333; }
+.btn-submit { width: 100%; padding: 16px; background: var(--accent-blue); border: none; border-radius: 14px; color: white; font-weight: bold; margin-top: 10px; cursor: pointer; }
+
+/* Стили для рефералов */
+.ref-box { background: #0c162d; border-radius: 20px; padding: 20px; border: 1px solid #1a2a4d; margin-bottom: 25px; }
+.ref-link-field { background: #162447; padding: 15px; border-radius: 12px; font-size: 13px; color: #8ba3e0; word-break: break-all; margin-bottom: 15px; border: 1px solid #1e3a8a; }
