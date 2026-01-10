@@ -3,8 +3,6 @@
     --bg-black: #000000;
     --card-bg: #0a0a0f;
     --text-gray: #a1a1a1;
-    --ref-purple: #4231a5;
-    --energy-yellow: #ffcf2d; /* Цвет для энергии */
 }
 
 body {
@@ -14,116 +12,51 @@ body {
 
 .app-container { display: flex; flex-direction: column; height: 100%; max-width: 500px; margin: 0 auto; position: relative; }
 .screens-wrapper { flex: 1; position: relative; }
-.screen { position: absolute; inset: 0; display: none; padding: 20px; flex-direction: column; overflow-y: auto; padding-bottom: 100px; }
+.screen { position: absolute; inset: 0; display: none; padding: 20px; flex-direction: column; overflow-y: auto; padding-bottom: 120px; }
 .screen.active { display: flex; }
 
-/* ЭНЕРГИЯ (НОВОЕ) */
-.energy-container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    margin-bottom: 15px;
-    font-weight: bold;
-    color: var(--energy-yellow);
-}
-.energy-bar {
-    width: 60%;
-    height: 8px;
-    background: #1c1c24;
-    border-radius: 10px;
-    overflow: hidden;
-    border: 1px solid #333;
-}
-.energy-fill {
-    height: 100%;
-    background: linear-gradient(90deg, #ffcf2d, #ff9500);
-    width: 100%; /* Управляется через JS */
-    transition: width 0.3s ease;
-}
+/* ЭНЕРГИЯ */
+.energy-section { align-self: center; width: 80%; margin-bottom: 30px; margin-top: 10px; }
+.energy-bar { background: #111; height: 10px; border-radius: 10px; border: 1px solid #333; overflow: hidden; }
+.energy-fill { background: var(--accent-blue); height: 100%; transition: 0.3s; }
+.energy-text { text-align: center; font-size: 12px; margin-top: 5px; color: var(--text-gray); }
 
-/* ГЛАВНАЯ: КНОПКИ (Желтая зона) */
-.main-top-actions {
-    display: flex;
-    gap: 10px;
-    margin-top: 20px;
-    width: 100%;
-}
-.btn-main-act {
-    flex: 2;
-    background: #1c1c24;
-    border: 1px solid #333;
-    border-radius: 14px;
-    padding: 16px;
-    color: white;
-    font-weight: bold;
-    cursor: pointer;
-    transition: 0.2s;
-}
-.btn-main-act:active { transform: scale(0.95); background: #252530; }
+/* КНОПКИ ГЛАВНАЯ */
+.action-row { display: flex; gap: 10px; margin-top: auto; padding-bottom: 10px; }
+.btn-action { flex: 1; padding: 18px; border-radius: 18px; border: 1px solid #333; background: #111; color: white; font-weight: bold; font-size: 16px; }
+.btn-history-small { width: 55px; background: #111; border: 1px solid #333; border-radius: 18px; color: var(--accent-blue); display: flex; align-items: center; justify-content: center; font-size: 20px; }
 
-.btn-side-history {
-    flex: 0.6;
-    height: 52px;
-    background: #1c1c24;
-    border: 1px solid #333;
-    border-radius: 14px;
-    color: var(--accent-blue);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 20px;
+/* РЕЙТИНГ И БОНУСЫ */
+.rating-list { display: flex; flex-direction: column; gap: 10px; }
+.rating-card { background: #0f0f14; border-radius: 18px; padding: 12px 15px; display: flex; align-items: center; gap: 12px; border: 1px solid #1a1a1a; }
+
+.top-1 { border: 1px solid #ffd700 !important; background: linear-gradient(90deg, #3d3515 0%, #0f0f14 100%); }
+.top-2 { border: 1px solid #c0c0c0 !important; background: linear-gradient(90deg, #2a2a2e 0%, #0f0f14 100%); }
+.top-3 { border: 1px solid #cd7f32 !important; background: linear-gradient(90deg, #321e15 0%, #0f0f14 100%); }
+
+.bonus-badge {
+    background: linear-gradient(135deg, #ff9500 0%, #ffcc00 100%);
+    color: #000; font-size: 9px; font-weight: 900; padding: 2px 6px; border-radius: 6px; margin-bottom: 3px; display: inline-block; text-transform: uppercase;
 }
 
-/* РЕЙТИНГ (Зеленая зона) */
-.rating-list { display: flex; flex-direction: column; gap: 10px; margin-top: 10px; }
-.rating-item {
-    display: flex; align-items: center;
-    background: #0f0f14; padding: 15px;
-    border-radius: 16px; border: 1px solid #1a1a1a;
-}
-.rating-item .place { width: 35px; font-weight: bold; color: var(--accent-blue); font-size: 18px; }
-.rating-item .name { flex: 1; font-weight: 500; }
-.rating-item .val { font-weight: bold; color: #4cd964; }
+.user-sticky-footer { position: absolute; bottom: 85px; left: 0; right: 0; padding: 10px 20px; background: linear-gradient(0deg, #000 0%, rgba(0,0,0,0) 100%); }
+.my-rank-card { background: #1c1c24 !important; border: 2px solid var(--accent-blue) !important; }
 
-.top-1 { border: 1px solid gold !important; background: rgba(255, 215, 0, 0.05) !important; }
-.top-2 { border: 1px solid #c0c0c0 !important; }
+/* МЕНЮ */
+.nav-bar { background: #08080c; display: flex; justify-content: space-around; align-items: center; height: 75px; border-top: 1px solid #1a1a1a; padding-bottom: 10px; }
+.nav-item { color: #555; display: flex; flex-direction: column; align-items: center; font-size: 10px; flex: 1; }
+.nav-item.active { color: white; }
+.nav-item i { font-size: 20px; margin-bottom: 4px; }
+.nav-center { position: relative; top: -15px; }
+.center-circle { width: 55px; height: 55px; background: #1c1c24; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 3px solid #08080c; box-shadow: 0 0 15px rgba(45, 91, 255, 0.2); }
+.nav-item.active .center-circle { background: var(--accent-blue); }
 
-/* НИЖНЕЕ МЕНЮ (Красная зона - Игры) */
-.nav-bar-new {
-    display: flex; justify-content: space-around; align-items: center;
-    background: #08080c; height: 80px; border-top: 1px solid #1a1a1a;
-    padding-bottom: 15px; z-index: 1000;
-}
-.nav-item {
-    flex: 1; text-align: center; color: #555; font-size: 10px;
-    display: flex; flex-direction: column; align-items: center;
-}
-.nav-item.active { color: var(--accent-blue); }
-.nav-item i { font-size: 20px; margin-bottom: 5px; }
-
-.nav-games-center { position: relative; top: -18px; }
-.games-icon-circle {
-    width: 60px; height: 60px; background: #1c1c24;
-    border-radius: 50%; display: flex; align-items: center; justify-content: center;
-    border: 4px solid #08080c; box-shadow: 0 0 20px rgba(45, 91, 255, 0.3);
-    margin-bottom: 5px;
-}
-.nav-item.active .games-icon-circle { background: var(--accent-blue); color: white; }
-
-/* ОСТАЛЬНОЕ (Твой базовый код) */
-.promo-badge { background: rgba(45, 91, 255, 0.1); border-bottom: 2px solid var(--accent-blue); padding: 8px 20px; border-radius: 12px; margin-top: 10px; align-self: center; font-weight: bold; }
-.balance { font-size: 42px; font-weight: 800; margin: 20px 0; text-align: center; letter-spacing: -1px; }
-.ton-logo-circle { width: 180px; height: 180px; background: var(--accent-blue); border-radius: 50%; align-self: center; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 40px rgba(45,91,255,0.4); margin-bottom: 20px; }
-
-.history-item { background: #0f0f14; padding: 15px; border-radius: 15px; margin-bottom: 10px; display: flex; justify-content: space-between; border-left: 4px solid #333; }
-.history-item.plus { border-left-color: #4cd964; }
-.history-item.minus { border-left-color: #ff3b30; }
-
-.overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.85); display: none; align-items: center; justify-content: center; z-index: 2000; }
-.modal { background: #111; padding: 25px; border-radius: 25px; width: 85%; border: 1px solid #333; }
-.btn-submit { width: 100%; padding: 16px; background: var(--accent-blue); border: none; border-radius: 14px; color: white; font-weight: bold; margin-top: 10px; cursor: pointer; }
-
-/* Стили для рефералов */
+/* ЗАДАНИЯ И ДРУЗЬЯ (ТВОИ СТИЛИ) */
+.task-card { display: flex; justify-content: space-between; align-items: center; padding: 15px; margin-bottom: 12px; border-radius: 15px; background: #0a0a0f; border: 1px solid #1a1a1a; }
+.ad-special { background: linear-gradient(90deg, #0a0a0f 0%, #1a1a2e 100%); border: 1px solid var(--accent-blue); }
 .ref-box { background: #0c162d; border-radius: 20px; padding: 20px; border: 1px solid #1a2a4d; margin-bottom: 25px; }
-.ref-link-field { background: #162447; padding: 15px; border-radius: 12px; font-size: 13px; color: #8ba3e0; word-break: break-all; margin-bottom: 15px; border: 1px solid #1e3a8a; }
+.ref-link-field { background: #162447; padding: 15px; border-radius: 12px; font-size: 14px; color: #8ba3e0; word-break: break-all; margin-bottom: 15px; }
+.user-avatar-small img { width: 35px; height: 35px; border-radius: 50%; }
+.rank-icon { width: 35px; font-weight: bold; text-align: center; }
+.user-name-box { flex: 1; }
+.points-val { color: #4cd964; font-weight: bold; }
