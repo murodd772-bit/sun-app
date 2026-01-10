@@ -254,3 +254,34 @@ function showTab(id, el) {
         el.classList.add('active');
     }
 }
+
+function getBonus(rank) {
+    if (rank === 1) return "+0.5%";
+    if (rank === 2) return "+0.4%";
+    if (rank === 3) return "+0.3%";
+    if (rank >= 4 && rank <= 8) return "+0.2%";
+    if (rank >= 9 && rank <= 15) return "+0.1%";
+    return null;
+}
+
+function renderRating() {
+    const container = document.getElementById('rating-list-container');
+    let html = '';
+    for (let i = 1; i <= 50; i++) {
+        const bonus = getBonus(i);
+        const bonusHtml = bonus ? `<span class="bonus-badge">${bonus} Bonus</span>` : '';
+        let cls = i <= 3 ? `top-${i}` : '';
+        let icon = i <= 3 ? (i===1 ? '<i class="fas fa-crown"></i>' : '<i class="fas fa-medal"></i>') : i;
+        
+        html += `<div class="rating-card ${cls}">
+            <div class="rank-icon">${icon}</div>
+            <div class="user-avatar-small"><img src="https://via.placeholder.com/35"></div>
+            <div class="user-name-box">Player_${i*17}</div>
+            <div class="user-points-box">${bonusHtml}<div class="points-val">${(500/i).toFixed(2)} <i class="fas fa-gem"></i></div></div>
+        </div>`;
+    }
+    container.innerHTML = html;
+}
+
+// Запускай при старте
+renderRating();
