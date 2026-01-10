@@ -23,49 +23,13 @@
                 </svg>
             </div>
             
-            <div class="main-actions-grid">
-                <button class="btn-main" onclick="openModal('deposit')">
-                    <i class="fas fa-arrow-down"></i> Пополнить
-                </button>
-                <button class="btn-main" onclick="openModal('withdraw')">
-                    <i class="fas fa-arrow-up"></i> Вывод
-                </button>
-                <button class="btn-main btn-history" onclick="showTab('wallet', document.querySelector('.nav-item-rating'))">
-                    <i class="fas fa-history"></i> История
+            <div class="main-top-actions">
+                <button class="btn-main-act" onclick="openModal('deposit')">Пополнить</button>
+                <button class="btn-main-act" onclick="openModal('withdraw')">Вывод</button>
+                <button class="btn-side-history" onclick="showTab('wallet', document.querySelector('.nav-item-rating'))">
+                    <i class="fas fa-history"></i>
                 </button>
             </div>
-        </div>
-
-        <div id="wallet" class="screen">
-            <h2 style="margin-top:20px">Рейтинг и История</h2>
-            <div class="card">
-                <div>Ваш Баланс</div>
-                <span id="wallet-balance-val" style="font-weight:bold; color:var(--accent-blue)">0.00 TON</span>
-            </div>
-            <h3 style="margin: 20px 0 10px; font-size: 16px; color: var(--text-gray);">История транзакций</h3>
-            <div id="history-list"></div>
-        </div>
-
-        <div id="games" class="screen">
-            <h2 style="margin-top:20px">Игры</h2>
-            <div class="card" style="text-align:center; padding: 40px 20px;">
-                <i class="fas fa-dice" style="font-size: 50px; color: var(--accent-blue); margin-bottom: 20px;"></i>
-                <p>Раздел «Игры» находится в разработке. Скоро здесь появятся захватывающие возможности!</p>
-            </div>
-        </div>
-
-        <div id="friends" class="screen">
-            <p class="ref-info">Приглашайте друзей и получайте 10% от их дохода!</p>
-            <div class="ref-box">
-                <div class="ref-title">Ваша ссылка</div>
-                <div id="ref-link-text" class="ref-link-field">Загрузка...</div>
-                <div class="ref-buttons">
-                    <button class="btn-invite" onclick="shareInvite()">Пригласить</button>
-                    <button class="btn-copy" onclick="copyLink()"><i class="fas fa-copy"></i></button>
-                </div>
-            </div>
-            <h3 class="list-title">Друзья: <span id="friends-count">0</span></h3>
-            <div id="friends-list-container"></div>
         </div>
 
         <div id="earn" class="screen">
@@ -78,23 +42,57 @@
                 <button class="btn-submit task-btn" onclick="watchAd()">Смотреть</button>
             </div>
             <div id="task-sub" class="card task-card">
-                <div class="task-info"><div class="task-title">Подписка на канал</div><div class="task-reward">+1.0 TON</div></div>
+                <div class="task-info">
+                    <div class="task-title">Подписка на канал</div>
+                    <div class="task-reward">+1.0 TON</div>
+                </div>
                 <button class="btn-submit task-btn" onclick="doTask('sub', 'https://t.me/mayner50', 1.0)">Выполнить</button>
             </div>
         </div>
+
+        <div id="games" class="screen">
+            <h2 style="margin-top:20px; text-align:center;">Игры</h2>
+            <div class="card" style="text-align:center; padding: 50px 20px;">
+                <i class="fas fa-dice" style="font-size: 50px; color: var(--accent-blue); margin-bottom: 20px;"></i>
+                <p>Раздел в разработке... 🎲</p>
+            </div>
+        </div>
+
+        <div id="friends" class="screen">
+            <div class="ref-box">
+                <div class="ref-title">Ваша ссылка</div>
+                <div id="ref-link-text" class="ref-link-field">Загрузка...</div>
+                <div class="ref-buttons">
+                    <button class="btn-invite" onclick="shareInvite()">Пригласить</button>
+                    <button class="btn-copy" onclick="copyLink()">Копировать</button>
+                </div>
+            </div>
+            <h3 class="list-title">Друзья: <span id="friends-count">0</span></h3>
+            <div id="friends-list-container"></div>
+        </div>
+
+        <div id="wallet" class="screen">
+            <h2 style="margin-top:20px">Рейтинг</h2>
+            <div class="card">
+                <div>Ваш баланс</div>
+                <span id="wallet-balance-val" style="font-weight:bold; color:var(--accent-blue)">0.00 TON</span>
+            </div>
+            <h3 style="margin: 20px 0 10px; font-size: 16px; color: var(--text-gray);">История транзакций</h3>
+            <div id="history-list"></div>
+        </div>
     </div>
 
-    <nav class="nav-bar">
+    <nav class="nav-bar-new">
         <div class="nav-item active" onclick="showTab('home', this)">
-            <i class="fas fa-chart-line"></i>
-            <span>Доход</span>
+            <i class="fas fa-house-chimney"></i>
+            <span>Главная</span>
         </div>
         <div class="nav-item" onclick="showTab('earn', this)">
             <i class="fas fa-tasks"></i>
             <span>Задания</span>
         </div>
-        <div class="nav-item nav-item-center" onclick="showTab('games', this)">
-            <div class="center-btn"><i class="fas fa-dice"></i></div>
+        <div class="nav-item nav-games-center" onclick="showTab('games', this)">
+            <div class="games-icon-circle"><i class="fas fa-dice"></i></div>
             <span>Игры</span>
         </div>
         <div class="nav-item" onclick="showTab('friends', this)">
@@ -108,8 +106,24 @@
     </nav>
 </div>
 
-<div id="depositModal" class="overlay"><div class="modal">...</div></div>
-<div id="withdrawModal" class="overlay"><div class="modal">...</div></div>
+<div id="depositModal" class="overlay">
+    <div class="modal">
+        <h3>Пополнение TON</h3>
+        <input type="text" value="UQAqJ3KzD1l6VDGbaijIcsSeOss0FSBZggu_gmpy2kcvzuIE" readonly>
+        <input type="number" id="deposit-val" placeholder="Сумма">
+        <button class="btn-submit" onclick="handleDeposit()">Я оплатил</button>
+        <button class="btn-submit" style="background:none" onclick="closeModal()">Отмена</button>
+    </div>
+</div>
+
+<div id="withdrawModal" class="overlay">
+    <div class="modal">
+        <h3>Вывод TON</h3>
+        <input type="number" id="withdraw-val" placeholder="Сумма">
+        <button class="btn-submit" onclick="handleWithdraw()">Вывести</button>
+        <button class="btn-submit" style="background:none" onclick="closeModal()">Отмена</button>
+    </div>
+</div>
 
 <script src="script.js"></script>
 </body>
