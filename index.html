@@ -3,7 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>ERA App</title>
+    <title>SUN APP</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <script src="https://sad.adsgram.ai/js/adsgram-ad-sdk.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
 </head>
@@ -13,104 +15,124 @@
     <div class="screens-wrapper">
         
         <div id="home" class="screen active">
-            <div class="promo-badge">+2% в день</div>
+            <div class="promo-badge" id="speed-badge">+2.0% в день</div>
             
-            <div class="balance-container">
-                <span class="balance-val" id="main-balance">0.000000000</span>
-                <div class="ton-icon-blue"><i class="fa-solid fa-gem"></i></div>
-            </div>
+            <div class="balance" id="main-balance">0.000000000</div>
             
             <div class="ton-logo-circle">
-                <div class="ton-white-icon">
-                    <svg viewBox="0 0 120 120"><path d="M60 100L95 40H25L60 100Z" fill="white"/></svg>
-                </div>
+                <svg class="ton-symbol" viewBox="0 0 120 120" width="80" height="80">
+                    <path d="M60 100L95 40H25L60 100Z" fill="none" stroke="white" stroke-width="8" stroke-linejoin="round"/>
+                    <path d="M60 40V100" stroke="white" stroke-width="8" stroke-linecap="round"/>
+                </svg>
             </div>
 
             <div class="action-row">
                 <button class="btn-action" onclick="openModal('deposit')">Пополнить</button>
                 <button class="btn-action" onclick="openModal('withdraw')">Вывести</button>
-                <button class="btn-history-small" onclick="showTab('history-screen')">
+                <button class="btn-action" style="flex:0.3" onclick="showTab('history-screen')">
                     <i class="fas fa-history"></i>
                 </button>
             </div>
         </div>
 
         <div id="wallet" class="screen">
-            <h2 class="list-title" style="text-align:center">Топ пользователей</h2>
+            <h2 class="list-title" style="text-align:center; margin-top:20px;">Топ пользователей</h2>
+            
             <div id="rating-list-container" class="rating-list">
                 </div>
             
-            <div class="my-status-fixed">
+            <div class="user-sticky-footer">
                 <div class="rating-card my-rank-card">
                     <div class="rank-icon">#4203</div>
                     <div class="user-avatar-small"><img src="https://via.placeholder.com/35"></div>
                     <div class="user-name-box">Вы</div>
                     <div class="user-points-box">
-                        <span class="bonus-badge">+0.0%</span>
-                        <span class="points-val" id="my-footer-balance">0.00 <i class="fas fa-gem"></i></span>
+                        <span class="bonus-badge" id="my-bonus-val">+0.0%</span>
+                        <div class="points-val" id="my-footer-balance">0.00</div>
                     </div>
                 </div>
-            </div>
-        </div>
-
-        <div id="earn" class="screen">
-            <h2 class="list-title">Задания</h2>
-            <div class="task-card ad-special">
-                <div class="task-info">
-                    <div class="task-title">Просмотр рекламы</div>
-                    <div class="task-reward">+0.05 TON</div>
-                </div>
-                <button class="task-btn">Смотреть</button>
-            </div>
-            <div class="task-card">
-                <div class="task-info">
-                    <div class="task-title">Подписка на канал</div>
-                    <div class="task-reward">+1.0 TON</div>
-                </div>
-                <button class="task-btn">Выполнить</button>
             </div>
         </div>
 
         <div id="friends" class="screen">
             <div class="ref-box">
                 <div class="ref-title">Ваша ссылка</div>
-                <div class="ref-link-field" id="ref-link">t.me/era_bot?start=user</div>
+                <div id="ref-link-text" class="ref-link-field">Загрузка...</div>
                 <div class="ref-buttons">
-                    <button class="btn-invite">Пригласить</button>
-                    <button class="btn-copy">Копия</button>
+                    <button class="btn-invite" onclick="shareInvite()">Пригласить</button>
+                    <button class="btn-copy" onclick="copyLink()">Копировать</button>
                 </div>
             </div>
-            <h3 class="list-title">Друзья: 0</h3>
-            <div id="friends-list"></div>
+            <h3 class="list-title">Друзья: <span id="friends-count">0</span></h3>
+            <div id="friends-list-container"></div>
+        </div>
+
+        <div id="earn" class="screen">
+            <h2 style="margin-top:20px">Задания</h2>
+            
+            <div class="card task-card ad-special">
+                <div class="task-info">
+                    <div class="task-title">Просмотр рекламы</div>
+                    <div class="task-reward">+0.05 TON</div>
+                </div>
+                <button class="task-btn" onclick="watchAd()">Смотреть</button>
+            </div>
+
+            <div id="task-sub" class="card task-card">
+                <div class="task-info">
+                    <div class="task-title">Подписка на канал</div>
+                    <div class="task-reward">+1.0 TON</div>
+                </div>
+                <button class="task-btn" onclick="doTask('sub', 'https://t.me/mayner50', 1.0)">Выполнить</button>
+            </div>
         </div>
 
         <div id="history-screen" class="screen">
-            <div style="display:flex; align-items:center; gap:15px; margin-bottom:20px">
-                <button onclick="showTab('home')" style="background:none; border:none; color:white; font-size:20px"><i class="fas fa-arrow-left"></i></button>
-                <h2 style="margin:0">История</h2>
-            </div>
+            <h2 class="list-title">История транзакций</h2>
             <div id="history-list"></div>
+            <button class="btn-submit" onclick="showTab('home')">Назад</button>
         </div>
 
     </div>
 
     <nav class="nav-bar">
         <div class="nav-item active" onclick="showTab('home', this)">
-            <i class="fas fa-house"></i><span>Home</span>
+            <i class="fas fa-house nav-icon"></i>
+            <span>Home</span>
         </div>
         <div class="nav-item" onclick="showTab('wallet', this)">
-            <i class="fas fa-trophy"></i><span>Top</span>
-        </div>
-        <div class="nav-item nav-center" onclick="showTab('home', this)">
-            <div class="center-circle"><i class="fas fa-dice"></i></div>
+            <i class="fas fa-trophy nav-icon"></i>
+            <span>Top</span>
         </div>
         <div class="nav-item" onclick="showTab('friends', this)">
-            <i class="fas fa-users"></i><span>Friends</span>
+            <i class="fas fa-users nav-icon"></i>
+            <span>Friends</span>
         </div>
         <div class="nav-item" onclick="showTab('earn', this)">
-            <i class="fas fa-coins"></i><span>Earn</span>
+            <i class="fas fa-coins nav-icon"></i>
+            <span>Earn</span>
         </div>
     </nav>
+</div>
+
+<div id="depositModal" class="overlay">
+    <div class="modal">
+        <h3>Пополнение TON</h3>
+        <input type="text" value="UQAqJ3KzD1l6VDGbaijIcsSeOss0FSBZggu_gmpy2kcvzuIE" readonly>
+        <p style="font-size:12px; color:var(--text-gray); margin-bottom:10px;">Отправьте TON на этот адрес</p>
+        <input type="number" id="deposit-val" placeholder="Сумма">
+        <button class="btn-submit" onclick="handleDeposit()">Я оплатил</button>
+        <button class="btn-submit" style="background:none" onclick="closeModal()">Отмена</button>
+    </div>
+</div>
+
+<div id="withdrawModal" class="overlay">
+    <div class="modal">
+        <h3>Вывод TON</h3>
+        <input type="number" id="withdraw-val" placeholder="Сумма">
+        <button class="btn-submit" onclick="handleWithdraw()">Вывести</button>
+        <button class="btn-submit" style="background:none" onclick="closeModal()">Отмена</button>
+    </div>
 </div>
 
 <script src="script.js"></script>
