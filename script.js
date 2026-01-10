@@ -238,3 +238,19 @@ function init() {
 }
 
 document.addEventListener('DOMContentLoaded', init);
+
+function showTab(id, el) {
+    // Скрываем все экраны
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    // Убираем подсветку со всех кнопок меню
+    document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+    
+    // Показываем нужный экран
+    const target = document.getElementById(id);
+    if(target) target.classList.add('active');
+    
+    // Если нажали на элемент меню — подсвечиваем его
+    if(el && el.classList.contains('nav-item')) {
+        el.classList.add('active');
+    }
+}
