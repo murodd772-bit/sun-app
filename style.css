@@ -1,6 +1,9 @@
 :root {
     --accent-blue: #2d5bff;
     --bg-black: #000000;
+    --card-bg: #0a0a0f;
+    --text-gray: #a1a1a1;
+    --ref-purple: #4231a5;
 }
 
 body {
@@ -13,24 +16,22 @@ body {
 .screen { position: absolute; inset: 0; display: none; padding: 20px; flex-direction: column; overflow-y: auto; }
 .screen.active { display: flex; }
 
-/* ГЛАВНАЯ */
-.promo-badge { background: rgba(45, 91, 255, 0.1); border: 1px solid var(--accent-blue); padding: 5px 15px; border-radius: 20px; align-self: center; margin-top: 20px; font-size: 14px; }
-.balance-container { display: flex; align-items: center; justify-content: center; gap: 10px; margin: 30px 0; }
-.balance-val { font-size: 38px; font-weight: 800; }
-.ton-icon-blue { width: 24px; height: 24px; background: #0088cc; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; }
+/* Дизайн реферальной части */
+.ref-box { background: #0c162d; border-radius: 20px; padding: 20px; border: 1px solid #1a2a4d; margin-bottom: 25px; }
+.ref-title { font-size: 22px; font-weight: bold; margin-bottom: 15px; }
+.ref-link-field { background: #162447; padding: 15px; border-radius: 12px; font-size: 14px; color: #8ba3e0; word-break: break-all; margin-bottom: 15px; }
+.ref-buttons { display: flex; gap: 10px; }
+.btn-invite { flex: 1; background: #3e59b5; border: none; border-radius: 12px; color: white; font-weight: bold; display: flex; align-items: center; justify-content: center; height: 50px; cursor: pointer; }
+.btn-copy { width: 50px; background: #3e59b5; border: none; border-radius: 12px; display: flex; align-items: center; justify-content: center; cursor: pointer; }
 
-.ton-logo-circle { 
-    width: 200px; height: 200px; background: var(--accent-blue); border-radius: 50%; 
-    align-self: center; display: flex; align-items: center; justify-content: center; 
-    box-shadow: 0 0 40px rgba(45,91,255,0.5); margin: 20px 0;
-}
-.ton-white-icon { width: 80px; }
+/* Остальные стили */
+.promo-badge { background: rgba(45, 91, 255, 0.1); border-bottom: 2px solid var(--accent-blue); padding: 8px 20px; border-radius: 12px; margin-top: 15px; width: fit-content; align-self: center; }
+.balance { font-size: 40px; font-weight: 800; margin: 25px 0; text-align: center; }
+.ton-logo-circle { width: 200px; height: 200px; background: var(--accent-blue); border-radius: 50%; align-self: center; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 30px rgba(45,91,255,0.4); margin-bottom: 40px; }
+.action-row { display: flex; gap: 10px; margin-top: auto; padding-bottom: 10px; }
+.btn-action { flex: 1; padding: 18px; border-radius: 18px; border: 1px solid #333; background: #111; color: white; font-weight: bold; font-size: 16px; cursor: pointer; }
 
-.action-row { display: flex; gap: 10px; margin-top: auto; padding-bottom: 20px; }
-.btn-action { flex: 1; padding: 18px; border-radius: 18px; border: none; background: #1a233b; color: white; font-weight: bold; font-size: 16px; }
-.btn-history-small { width: 55px; background: #1a233b; border: none; border-radius: 18px; color: #fff; display: flex; align-items: center; justify-content: center; }
-
-/* РЕЙТИНГ */
+/* РЕЙТИНГ (Добавлено) */
 .rating-list { display: flex; flex-direction: column; gap: 10px; padding-bottom: 140px; }
 .rating-card { background: #0a0a0f; border: 1px solid #1a1a1a; padding: 12px; border-radius: 15px; display: flex; align-items: center; gap: 12px; }
 
@@ -38,30 +39,20 @@ body {
 .top-2 { border: 1px solid #c0c0c0 !important; background: linear-gradient(90deg, #2a2a2e 0%, #0a0a0f 100%); }
 .top-3 { border: 1px solid #cd7f32 !important; background: linear-gradient(90deg, #321e15 0%, #0a0a0f 100%); }
 
-.my-status-fixed { position: absolute; bottom: 85px; left: 0; right: 0; padding: 15px 20px; background: linear-gradient(0deg, #000 80%, transparent); z-index: 100; }
-.my-rank-card { border: 1.5px solid var(--accent-blue) !important; background: #0d162d !important; box-shadow: 0 -5px 15px rgba(0,0,0,0.5); }
+.user-sticky-footer { position: absolute; bottom: 85px; left: 0; right: 0; padding: 15px 20px; background: linear-gradient(0deg, #000 80%, transparent); z-index: 100; }
+.my-rank-card { border: 1.5px solid var(--accent-blue) !important; background: #0d162d !important; }
 
-.bonus-badge { background: #ff9500; color: black; font-size: 9px; padding: 2px 6px; border-radius: 5px; font-weight: bold; text-transform: uppercase; margin-bottom: 3px; display: inline-block; }
-.rank-icon { width: 30px; font-weight: bold; text-align: center; color: var(--accent-blue); }
+.bonus-badge { background: #ff9500; color: black; font-size: 9px; padding: 2px 6px; border-radius: 5px; font-weight: bold; text-transform: uppercase; }
+.rank-icon { width: 30px; font-weight: bold; text-align: center; color: var(--accent-blue); font-size: 14px; }
 .user-avatar-small img { width: 35px; height: 35px; border-radius: 50%; }
-.user-name-box { flex: 1; font-size: 14px; font-weight: 500; }
-.user-points-box { text-align: right; }
-.points-val { color: #4cd964; font-weight: bold; font-size: 14px; }
+.user-name-box { flex: 1; font-size: 14px; }
+.points-val { color: #4cd964; font-weight: bold; }
 
-/* ЗАДАНИЯ И ДРУЗЬЯ (ТВОИ СТИЛИ) */
+/* Меню и Задания */
+.nav-bar { background: #08080c; display: flex; justify-content: space-around; padding: 10px 0 30px; border-top: 1px solid #1a1a1a; }
+.nav-item { color: #555; display: flex; flex-direction: column; align-items: center; font-size: 11px; cursor: pointer; }
+.nav-item.active { color: white; }
+.nav-icon { font-size: 20px; margin-bottom: 4px; }
+
 .task-card { display: flex; justify-content: space-between; align-items: center; padding: 15px; margin-bottom: 12px; border-radius: 15px; background: #0a0a0f; border: 1px solid #1a1a1a; }
-.ad-special { border: 1px solid var(--accent-blue); background: linear-gradient(90deg, #0a0a0f, #111a33); }
-.task-btn { background: var(--accent-blue); border: none; padding: 8px 15px; border-radius: 10px; color: white; font-weight: 800; font-size: 12px; }
-.ref-box { background: #0c162d; border-radius: 20px; padding: 20px; border: 1px solid #1a2a4d; margin-bottom: 25px; }
-.ref-link-field { background: #162447; padding: 15px; border-radius: 12px; font-size: 13px; color: #8ba3e0; word-break: break-all; margin-bottom: 15px; }
-.btn-invite { flex: 1; background: #3e59b5; border: none; border-radius: 12px; height: 50px; color: white; font-weight: bold; }
-.btn-copy { width: 50px; background: #3e59b5; border: none; border-radius: 12px; color: white; }
-.ref-buttons { display: flex; gap: 10px; }
-
-/* МЕНЮ */
-.nav-bar { background: #050508; display: flex; justify-content: space-around; align-items: center; height: 75px; border-top: 1px solid #111; padding-bottom: env(safe-area-inset-bottom); }
-.nav-item { color: #555; text-align: center; font-size: 10px; flex: 1; transition: 0.2s; }
-.nav-item.active { color: #fff; }
-.nav-item i { display: block; font-size: 18px; margin-bottom: 4px; }
-.nav-center { position: relative; top: -15px; }
-.center-circle { width: 55px; height: 55px; background: var(--accent-blue); border-radius: 50%; border: 4px solid #050508; display: flex; align-items: center; justify-content: center; color: white; font-size: 22px; box-shadow: 0 0 15px rgba(45, 91, 255, 0.4); }
+.task-btn { background: var(--accent-blue); border: none; padding: 8px 15px; border-radius: 10px; color: white; font-weight: bold; cursor: pointer; }
