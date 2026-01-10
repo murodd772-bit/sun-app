@@ -3,9 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>SUN APP</title>
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <script src="https://sad.adsgram.ai/js/adsgram-ad-sdk.js"></script>
+    <title>ERA App</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
 </head>
@@ -14,25 +12,23 @@
 <div class="app-container">
     <div class="screens-wrapper">
         
-        <div id="home" class="screen home-content active">
-            <div class="promo-badge" id="speed-badge">+1.0% в день</div>
-            <div class="balance" id="main-balance">0.000000000</div>
+        <div id="home" class="screen active">
+            <div class="promo-badge">+2% в день</div>
+            
+            <div class="balance-container">
+                <span class="balance-val" id="main-balance">0.000000000</span>
+                <div class="ton-icon-blue"><i class="fa-solid fa-gem"></i></div>
+            </div>
             
             <div class="ton-logo-circle">
-                <svg class="ton-symbol" viewBox="0 0 120 120">
-                    <path d="M60 100L95 40H25L60 100Z" fill="none" stroke="white" stroke-width="8" stroke-linejoin="round"/>
-                    <path d="M60 40V100" stroke="white" stroke-width="8" stroke-linecap="round"/>
-                </svg>
+                <div class="ton-white-icon">
+                    <svg viewBox="0 0 120 120"><path d="M60 100L95 40H25L60 100Z" fill="white"/></svg>
+                </div>
             </div>
 
-            <div class="energy-section">
-                <div class="energy-bar"><div class="energy-fill" id="energy-fill" style="width: 100%;"></div></div>
-                <div class="energy-text"><i class="fas fa-bolt"></i> <span id="energy-val">1000/1000</span></div>
-            </div>
-            
             <div class="action-row">
                 <button class="btn-action" onclick="openModal('deposit')">Пополнить</button>
-                <button class="btn-action" onclick="openModal('withdraw')">Вывод</button>
+                <button class="btn-action" onclick="openModal('withdraw')">Вывести</button>
                 <button class="btn-history-small" onclick="showTab('history-screen')">
                     <i class="fas fa-history"></i>
                 </button>
@@ -40,22 +36,52 @@
         </div>
 
         <div id="wallet" class="screen">
-            <h2 style="margin-top:20px; text-align:center;">Топ пользователей</h2>
-            
+            <h2 class="list-title" style="text-align:center">Топ пользователей</h2>
             <div id="rating-list-container" class="rating-list">
                 </div>
-
-            <div class="user-sticky-footer">
+            
+            <div class="my-status-fixed">
                 <div class="rating-card my-rank-card">
-                    <div class="rank-icon"><span id="my-dynamic-place">#4203</span></div>
-                    <div class="user-avatar-small"><img src="https://via.placeholder.com/35" alt="avatar"></div>
+                    <div class="rank-icon">#4203</div>
+                    <div class="user-avatar-small"><img src="https://via.placeholder.com/35"></div>
                     <div class="user-name-box">Вы</div>
                     <div class="user-points-box">
-                        <span class="bonus-badge" id="my-bonus-val">+0.0%</span>
-                        <span class="points-val" id="my-points-rating">0.00 <i class="fas fa-gem"></i></span>
+                        <span class="bonus-badge">+0.0%</span>
+                        <span class="points-val" id="my-footer-balance">0.00 <i class="fas fa-gem"></i></span>
                     </div>
                 </div>
             </div>
+        </div>
+
+        <div id="earn" class="screen">
+            <h2 class="list-title">Задания</h2>
+            <div class="task-card ad-special">
+                <div class="task-info">
+                    <div class="task-title">Просмотр рекламы</div>
+                    <div class="task-reward">+0.05 TON</div>
+                </div>
+                <button class="task-btn">Смотреть</button>
+            </div>
+            <div class="task-card">
+                <div class="task-info">
+                    <div class="task-title">Подписка на канал</div>
+                    <div class="task-reward">+1.0 TON</div>
+                </div>
+                <button class="task-btn">Выполнить</button>
+            </div>
+        </div>
+
+        <div id="friends" class="screen">
+            <div class="ref-box">
+                <div class="ref-title">Ваша ссылка</div>
+                <div class="ref-link-field" id="ref-link">t.me/era_bot?start=user</div>
+                <div class="ref-buttons">
+                    <button class="btn-invite">Пригласить</button>
+                    <button class="btn-copy">Копия</button>
+                </div>
+            </div>
+            <h3 class="list-title">Друзья: 0</h3>
+            <div id="friends-list"></div>
         </div>
 
         <div id="history-screen" class="screen">
@@ -66,66 +92,23 @@
             <div id="history-list"></div>
         </div>
 
-        <div id="games" class="screen">
-            <h2 style="margin-top:20px; text-align:center;">Игры</h2>
-            <div class="card-game-soon">
-                <i class="fas fa-dice" style="font-size: 50px; color: var(--accent-blue); margin-bottom: 20px;"></i>
-                <p>Раздел в разработке... 🎲</p>
-            </div>
-        </div>
-
-        <div id="earn" class="screen">
-            <h2 style="margin-top:20px">Задания</h2>
-            <div class="card task-card ad-special">
-                <div class="task-info">
-                    <div class="task-title">Просмотр рекламы</div>
-                    <div class="task-reward">+0.05 TON</div>
-                </div>
-                <button class="btn-submit task-btn" onclick="watchAd()">Смотреть</button>
-            </div>
-            <div id="task-sub" class="card task-card">
-                <div class="task-info">
-                    <div class="task-title">Подписка на канал</div>
-                    <div class="task-reward">+1.0 TON</div>
-                </div>
-                <button class="btn-submit task-btn" onclick="doTask('sub', 'https://t.me/mayner50', 1.0)">Выполнить</button>
-            </div>
-        </div>
-
-        <div id="friends" class="screen">
-            <div class="ref-box">
-                <div class="ref-title">Ваша ссылка</div>
-                <div id="ref-link-text" class="ref-link-field">Загрузка...</div>
-                <div class="ref-buttons">
-                    <button class="btn-invite" onclick="shareInvite()">Пригласить</button>
-                    <button class="btn-copy" onclick="copyLink()">Копировать</button>
-                </div>
-            </div>
-            <h3 class="list-title">Друзья: <span id="friends-count">0</span></h3>
-            <div id="friends-list-container"></div>
-        </div>
     </div>
 
     <nav class="nav-bar">
         <div class="nav-item active" onclick="showTab('home', this)">
-            <i class="fas fa-house-chimney"></i>
-            <span>Главная</span>
-        </div>
-        <div class="nav-item" onclick="showTab('earn', this)">
-            <i class="fas fa-tasks"></i>
-            <span>Задания</span>
-        </div>
-        <div class="nav-item nav-center" onclick="showTab('games', this)">
-            <div class="center-circle"><i class="fas fa-dice"></i></div>
-            <span>Игры</span>
-        </div>
-        <div class="nav-item" onclick="showTab('friends', this)">
-            <i class="fas fa-users"></i>
-            <span>Друзья</span>
+            <i class="fas fa-house"></i><span>Home</span>
         </div>
         <div class="nav-item" onclick="showTab('wallet', this)">
-            <i class="fas fa-trophy"></i>
-            <span>Рейтинг</span>
+            <i class="fas fa-trophy"></i><span>Top</span>
+        </div>
+        <div class="nav-item nav-center" onclick="showTab('home', this)">
+            <div class="center-circle"><i class="fas fa-dice"></i></div>
+        </div>
+        <div class="nav-item" onclick="showTab('friends', this)">
+            <i class="fas fa-users"></i><span>Friends</span>
+        </div>
+        <div class="nav-item" onclick="showTab('earn', this)">
+            <i class="fas fa-coins"></i><span>Earn</span>
         </div>
     </nav>
 </div>
