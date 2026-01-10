@@ -168,3 +168,46 @@ body {
 
 .nav-item.active .games-icon-wrap { background: var(--accent-blue); }
 .nav-item.active .games-icon-wrap i { color: white; }
+
+/* Экран истории и кнопка Назад */
+.screen-header { display: flex; align-items: center; gap: 15px; margin-bottom: 20px; }
+.back-btn { background: none; border: none; color: white; font-size: 20px; cursor: pointer; }
+
+/* Карточка рейтинга пользователя */
+.user-rank-card {
+    background: linear-gradient(135deg, #1c1c24 0%, #0a0a0f 100%);
+    padding: 20px;
+    border-radius: 20px;
+    border: 1px solid var(--accent-blue);
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+}
+.rank-info span { color: var(--accent-blue); font-weight: bold; }
+
+/* Список рейтинга */
+.rating-item {
+    display: flex;
+    align-items: center;
+    background: #0f0f14;
+    padding: 15px;
+    border-radius: 15px;
+    margin-bottom: 8px;
+    border: 1px solid #1a1a1a;
+}
+.rating-item .place { width: 30px; font-weight: bold; color: var(--accent-blue); }
+.rating-item .name { flex: 1; margin-left: 10px; }
+.rating-item .val { font-weight: bold; color: #4cd964; }
+
+/* Топ-места */
+.top-1 { border: 1px solid #ffd700; background: rgba(255, 215, 0, 0.05); }
+.top-2 { border: 1px solid #c0c0c0; background: rgba(192, 192, 192, 0.05); }
+
+/* Заглушка для игр */
+.card-game-soon {
+    text-align: center;
+    padding: 60px 20px;
+    background: #0a0a0f;
+    border-radius: 30px;
+    border: 1px dashed #333;
+}
