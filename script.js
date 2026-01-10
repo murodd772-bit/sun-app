@@ -188,3 +188,105 @@ function init() {
 }
 
 document.addEventListener('DOMContentLoaded', init);
+
+let balance = parseFloat(localStorage.getItem('sun_balance')) || 5.0;
+let lastUpdate = Date.now();
+const COMMISSION = 0.10; // 10% только для игр
+
+function updateDisplay() {
+    document.getElementById('main-balance').textContent = balance.toFixed(9);
+    document.getElementById('my-footer-balance').textContent = balance.toFixed(2);
+    localStorage.setItem('sun_balance', balance);
+}
+
+// Майнинг
+setInterval(() => {
+    let now = Date.now();
+    balance += (balance * 0.01) * ((now - lastUpdate) / 86400000);
+    lastUpdate = now;
+    updateDisplay();
+}, 1000);
+
+function showTab(id, el) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    if(el) el.classList.add('active');
+    if(id === 'wallet') renderRating();
+}
+
+// --- ИГРА: COIN FLIP (С КОМИССИЕЙ) ---
+function playCoinFlip() {
+    if (balance < 0.1) return alert("Минимум 0.1 TON");
+    balance -= 0.1;
+    let win = Math.random() > 0.5;
+    if (win) {
+        let prize = 0.2 * (1 - COMMISSION); // 0.18 TON
+        balance += prize;
+        alert(`Победа! Зачислено ${prize.toFixed(2)} TON (Комиссия 10%)`);
+    } else {
+        alert("Проигрыш!");
+    }
+    updateDisplay();
+}
+
+// --- ИГРА: ПОСЛЕДНИЙ ГЕРОЙ (С КОМИССИЕЙ) ---
+let heroActive = false;
+let heroTime = 300;
+let heroBank = 0;
+let heroInt;
+let lastPl = "bot";
+
+function joinHeroGame() {
+    if (balance < 0.1) return alert("Нужно 0.1 TON");
+    balance -= 0.1;
+    if (!heroActive) {
+        heroBank = 0.2; 
+        heroActive = true;
+        lastPl = "me";
+        document.getElementById('hero-timer').style.display = 'block';
+        document.getElementById('hero-bank').style.display = 'block';
+        heroInt = setInterval(() => {
+            heroTime--;
+            if (heroTime <= 0) {
+                clearInterval(heroInt);
+                if (lastPl === "me") {
+                    let finalPrize = heroBank * (1 - COMMISSION);
+                    balance += finalPrize;
+                    alert(`Вы выиграли ${finalPrize.toFixed(2)} TON (Комиссия 10%)`);
+                }
+                heroActive = false;
+                heroTime = 300;
+            }
+            updateHeroUI();
+        }, 1000);
+    } else {
+        heroBank += 0.1;
+        heroTime += 15;
+        lastPl = "me";
+    }
+    updateDisplay();
+}
+
+function updateHeroUI() {
+    let m = Math.floor(heroTime / 60), s = heroTime % 60;
+    document.getElementById('hero-timer').textContent = `${m}:${s<10?'0'+s:s}`;
+    document.getElementById('hero-bank').textContent = `Банк: ${heroBank.toFixed(2)} TON`;
+    document.getElementById('hero-status').textContent = lastPl === "me" ? "Лидер: Вы" : "Лидер: Соперник";
+}
+
+// --- РЕКЛАМА (БЕЗ КОМИССИИ) ---
+function watchAd() {
+    // Если Adsgram подключен, начисляем полные 0.05
+    balance += 0.05;
+    alert("Награда 0.05 TON зачислена полностью!");
+    updateDisplay();
+}
+
+function renderRating() {
+    const container = document.getElementById('rating-list-container');
+    container.innerHTML = `
+        <div class="rating-card top-1"><div class="rank-badge">👑</div> SARDOR <div class="user-score">1357.45 TON</div></div>
+        <div class="rating-card top-2"><div class="rank-badge">2</div> Alexis <div class="user-score">1005.29 TON</div></div>
+    `;
+}
