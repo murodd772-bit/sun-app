@@ -17,78 +17,61 @@
         <div id="home" class="screen home-content active">
             <div class="promo-badge" id="speed-badge">+1.0% в день</div>
             <div class="balance" id="main-balance">0.000000000</div>
+            
             <div class="ton-logo-circle">
                 <svg class="ton-symbol" viewBox="0 0 120 120">
                     <path d="M60 100L95 40H25L60 100Z" fill="none" stroke="white" stroke-width="8" stroke-linejoin="round"/>
                     <path d="M60 40V100" stroke="white" stroke-width="8" stroke-linecap="round"/>
                 </svg>
             </div>
+
+            <div class="energy-section">
+                <div class="energy-bar"><div class="energy-fill" id="energy-fill" style="width: 100%;"></div></div>
+                <div class="energy-text"><i class="fas fa-bolt"></i> <span id="energy-val">1000/1000</span></div>
+            </div>
             
-            <div class="main-top-actions">
-                <button class="btn-main-act" onclick="openModal('deposit')">Пополнить</button>
-                <button class="btn-main-act" onclick="openModal('withdraw')">Вывод</button>
-                <button class="btn-side-history" onclick="showTab('history-screen')">
+            <div class="action-row">
+                <button class="btn-action" onclick="openModal('deposit')">Пополнить</button>
+                <button class="btn-action" onclick="openModal('withdraw')">Вывод</button>
+                <button class="btn-history-small" onclick="showTab('history-screen')">
                     <i class="fas fa-history"></i>
                 </button>
             </div>
         </div>
 
+        <div id="wallet" class="screen">
+            <h2 style="margin-top:20px; text-align:center;">Топ пользователей</h2>
+            
+            <div id="rating-list-container" class="rating-list">
+                </div>
+
+            <div class="user-sticky-footer">
+                <div class="rating-card my-rank-card">
+                    <div class="rank-icon"><span id="my-dynamic-place">#4203</span></div>
+                    <div class="user-avatar-small"><img src="https://via.placeholder.com/35" alt="avatar"></div>
+                    <div class="user-name-box">Вы</div>
+                    <div class="user-points-box">
+                        <span class="bonus-badge" id="my-bonus-val">+0.0%</span>
+                        <span class="points-val" id="my-points-rating">0.00 <i class="fas fa-gem"></i></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div id="history-screen" class="screen">
-            <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 20px;">
-                <button onclick="showTab('home')" style="background:none; border:none; color:white; font-size:20px;"><i class="fas fa-arrow-left"></i></button>
+            <div style="display:flex; align-items:center; gap:15px; margin-bottom:20px">
+                <button onclick="showTab('home')" style="background:none; border:none; color:white; font-size:20px"><i class="fas fa-arrow-left"></i></button>
                 <h2 style="margin:0">История</h2>
             </div>
             <div id="history-list"></div>
         </div>
 
-        <div id="wallet" class="screen">
-            <h2 style="margin-top:20px; text-align:center;">Рейтинг ТОП-100</h2>
-            <div class="card" style="margin-bottom: 20px;">
-                <div style="color: var(--text-gray); font-size: 14px;">Ваш баланс:</div>
-                <div id="wallet-balance-val" style="font-weight:bold; color:var(--accent-blue); font-size: 20px;">0.00 TON</div>
-            </div>
-            
-            <div class="rating-list">
-                <div class="rating-item" style="border: 1px solid gold; background: rgba(255, 215, 0, 0.1);">
-                    <span class="rank">1</span>
-                    <span class="user">Murod_Dev</span>
-                    <span class="points">540.20 TON</span>
-                </div>
-                <div class="rating-item">
-                    <span class="rank">2</span>
-                    <span class="user">Alex_Crypto</span>
-                    <span class="points">312.45 TON</span>
-                </div>
-                <div class="rating-item">
-                    <span class="rank">3</span>
-                    <span class="user">Ton_Master</span>
-                    <span class="points">280.10 TON</span>
-                </div>
-                <div style="text-align:center; color:gray; font-size:12px; margin-top:10px;">Список обновляется раз в час</div>
-            </div>
-        </div>
-
         <div id="games" class="screen">
-            <h2 style="margin-top:20px; text-align:center;">Игровой Центр</h2>
-            <div class="card" style="text-align:center; padding: 40px 20px; border: 2px dashed #333;">
-                <i class="fas fa-dice" style="font-size: 60px; color: var(--accent-blue); margin-bottom: 20px;"></i>
-                <h3>Dice Game</h3>
-                <p style="color:gray;">Скоро: играйте на TON и умножайте баланс!</p>
-                <button class="btn-submit" style="opacity:0.5; cursor:not-allowed;">Скоро открытие</button>
+            <h2 style="margin-top:20px; text-align:center;">Игры</h2>
+            <div class="card-game-soon">
+                <i class="fas fa-dice" style="font-size: 50px; color: var(--accent-blue); margin-bottom: 20px;"></i>
+                <p>Раздел в разработке... 🎲</p>
             </div>
-        </div>
-
-        <div id="friends" class="screen">
-            <div class="ref-box">
-                <div class="ref-title">Ваша ссылка</div>
-                <div id="ref-link-text" class="ref-link-field">Загрузка...</div>
-                <div class="ref-buttons">
-                    <button class="btn-invite" onclick="shareInvite()">Пригласить</button>
-                    <button class="btn-copy" onclick="copyLink()">Копировать</button>
-                </div>
-            </div>
-            <h3 class="list-title">Друзья: <span id="friends-count">0</span></h3>
-            <div id="friends-list-container"></div>
         </div>
 
         <div id="earn" class="screen">
@@ -108,51 +91,43 @@
                 <button class="btn-submit task-btn" onclick="doTask('sub', 'https://t.me/mayner50', 1.0)">Выполнить</button>
             </div>
         </div>
+
+        <div id="friends" class="screen">
+            <div class="ref-box">
+                <div class="ref-title">Ваша ссылка</div>
+                <div id="ref-link-text" class="ref-link-field">Загрузка...</div>
+                <div class="ref-buttons">
+                    <button class="btn-invite" onclick="shareInvite()">Пригласить</button>
+                    <button class="btn-copy" onclick="copyLink()">Копировать</button>
+                </div>
+            </div>
+            <h3 class="list-title">Друзья: <span id="friends-count">0</span></h3>
+            <div id="friends-list-container"></div>
+        </div>
     </div>
 
-    <nav class="nav-bar-new">
+    <nav class="nav-bar">
         <div class="nav-item active" onclick="showTab('home', this)">
             <i class="fas fa-house-chimney"></i>
             <span>Главная</span>
-        </div>
-        <div class="nav-item nav-item-rating" onclick="showTab('wallet', this)">
-            <i class="fas fa-trophy"></i>
-            <span>Рейтинг</span>
-        </div>
-        
-        <div class="nav-item nav-games-center" onclick="showTab('games', this)">
-            <div class="games-icon-circle"><i class="fas fa-dice"></i></div>
-            <span>Игры</span>
-        </div>
-
-        <div class="nav-item" onclick="showTab('friends', this)">
-            <i class="fas fa-users"></i>
-            <span>Друзья</span>
         </div>
         <div class="nav-item" onclick="showTab('earn', this)">
             <i class="fas fa-tasks"></i>
             <span>Задания</span>
         </div>
+        <div class="nav-item nav-center" onclick="showTab('games', this)">
+            <div class="center-circle"><i class="fas fa-dice"></i></div>
+            <span>Игры</span>
+        </div>
+        <div class="nav-item" onclick="showTab('friends', this)">
+            <i class="fas fa-users"></i>
+            <span>Друзья</span>
+        </div>
+        <div class="nav-item" onclick="showTab('wallet', this)">
+            <i class="fas fa-trophy"></i>
+            <span>Рейтинг</span>
+        </div>
     </nav>
-</div>
-
-<div id="depositModal" class="overlay">
-    <div class="modal">
-        <h3>Пополнение TON</h3>
-        <input type="text" value="UQAqJ3KzD1l6VDGbaijIcsSeOss0FSBZggu_gmpy2kcvzuIE" readonly>
-        <input type="number" id="deposit-val" placeholder="Сумма">
-        <button class="btn-submit" onclick="handleDeposit()">Я оплатил</button>
-        <button class="btn-submit" style="background:none" onclick="closeModal()">Отмена</button>
-    </div>
-</div>
-
-<div id="withdrawModal" class="overlay">
-    <div class="modal">
-        <h3>Вывод TON</h3>
-        <input type="number" id="withdraw-val" placeholder="Сумма">
-        <button class="btn-submit" onclick="handleWithdraw()">Вывести</button>
-        <button class="btn-submit" style="background:none" onclick="closeModal()">Отмена</button>
-    </div>
 </div>
 
 <script src="script.js"></script>
