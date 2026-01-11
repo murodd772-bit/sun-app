@@ -1,412 +1,81 @@
 :root {
-    --accent-blue: #2d5bff;
-    --bg-black: #050508;
-    --card-bg: #0a0a0f;
-    --text-gray: #a1a1a1;
-    --ref-purple: #4231a5;
+    --accent-blue: #4a69da;
+    --bg-black: #000;
+    --card-bg: #0a1128;
+    --text-gray: #7a8bb2;
 }
 
-* { box-sizing: border-box; }
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
 body {
-    margin: 0;
-    background: var(--bg-black);
-    color: white;
-    font-family: -apple-system, system-ui, sans-serif;
-    height: 100vh;
-    overflow: hidden;
+    margin: 0; background: var(--bg-black); color: white;
+    font-family: -apple-system, sans-serif; height: 100vh; overflow: hidden;
 }
 
-.app-container {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    max-width: 500px;
-    margin: 0 auto;
-    position: relative;
-}
+.app-container { display: flex; flex-direction: column; height: 100%; max-width: 500px; margin: 0 auto; }
 
-/* Экраны */
-.screens-wrapper {
-    flex: 1;
-    position: relative;
-    overflow: hidden;
-}
+.screens-wrapper { flex: 1; overflow-y: auto; position: relative; }
 
-.screen {
-    position: absolute;
-    inset: 0;
-    display: none;
-    padding: 20px 20px 100px; /* Отступ снизу, чтобы контент не перекрывался меню */
-    flex-direction: column;
-    overflow-y: auto;
-}
+.screen { display: none; padding: 20px; padding-bottom: 100px; flex-direction: column; }
+.screen.active { display: flex; }
 
-.screen.active {
-    display: flex;
-}
-
-/* Главный экран (Майнинг) */
+/* Майнинг */
 .promo-badge {
-    background: rgba(45, 91, 255, 0.1);
-    border-bottom: 2px solid var(--accent-blue);
-    padding: 8px 20px;
-    border-radius: 12px;
-    margin-top: 15px;
-    width: fit-content;
-    align-self: center;
+    background: rgba(74, 105, 218, 0.1); border-bottom: 2px solid var(--accent-blue);
+    padding: 8px 15px; border-radius: 10px; align-self: center; margin-top: 10px;
 }
-
-.balance {
-    font-size: 36px;
-    font-weight: 800;
-    margin: 25px 0;
-    text-align: center;
-    font-family: monospace;
-}
-
+.balance-section { text-align: center; margin: 30px 0; }
+.balance { font-size: 38px; font-weight: bold; font-family: monospace; margin-top: 10px; }
 .ton-logo-circle {
-    width: 250px;
-    height: 250px;
-    background: var(--accent-blue);
-    border-radius: 50%;
-    align-self: center;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 0 30px rgba(45,91,255,0.4);
-    margin-bottom: 40px;
+    width: 180px; height: 180px; background: var(--accent-blue);
+    border-radius: 50%; align-self: center; display: flex;
+    align-items: center; justify-content: center; font-size: 80px;
+    box-shadow: 0 0 40px rgba(74, 105, 218, 0.4); margin-bottom: 30px;
 }
-
-/* Кнопки действий (Пополнить/Вывести) */
-.action-row {
-    display: flex;
-    gap: 10px;
-    margin-top: auto;
-    padding-bottom: 20px;
-}
-
-.btn-action {
-    flex: 1;
-    padding: 16px;
-    border-radius: 18px;
-    border: 1px solid #333;
-    background: #111;
-    color: white;
-    font-weight: bold;
-    font-size: 15px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-/* Игры */
-.hero-game {
-    background: linear-gradient(135deg, #440a0a, #ff3b30);
-    border: 1px solid #ff453a;
-    border-radius: 15px;
-    padding: 15px;
-}
-
-.hero-timer {
-    font-size: 24px;
-    font-weight: bold;
-    margin: 10px 0;
-}
-
-/* Рейтинг */
-.rating-list {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-.rating-card {
-    background: #121218;
-    border: 1px solid #1a1a1a;
-    padding: 15px;
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
-
-.top-1 { border: 1px solid #ffd700 !important; background: linear-gradient(90deg, #1a1500, #121218); }
-.top-2 { border: 1px solid #c0c0c0 !important; }
-.top-3 { border: 1px solid #cd7f32 !important; }
-
-.user-sticky-footer {
-    position: fixed;
-    bottom: 85px;
-    left: 15px;
-    right: 15px;
-    z-index: 10;
-}
-
-.my-card {
-    border: 2px solid var(--accent-blue);
-    background: #0a1128;
-}
-
-/* Нижнее меню */
-.nav-bar {
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-    max-width: 500px;
-    display: flex;
-    background: #0a0a0f;
-    border-top: 1px solid #1a1a1a;
-    padding: 10px 0 30px;
-    z-index: 1000;
-}
-
-.nav-item {
-    flex: 1;
-    text-align: center;
-    opacity: 0.5;
-    color: white;
-    text-decoration: none;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.nav-item.active {
-    opacity: 1;
-    color: var(--accent-blue);
-}
-
-.nav-item i {
-    font-size: 20px;
-    margin-bottom: 4px;
-}
-
-.nav-item span {
-    font-size: 10px;
-}
-
-/* Модальные окна */
-.overlay {
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.85);
-    display: none;
-    align-items: center;
-    justify-content: center;
-    z-index: 2000;
-}
-
-.modal {
-    background: #111;
-    padding: 25px;
-    border-radius: 20px;
-    width: 90%;
-    max-width: 400px;
-    text-align: center;
-}
-
-.btn-submit {
-    width: 100%;
-    padding: 15px;
-    background: var(--accent-blue);
-    border: none;
-    border-radius: 12px;
-    color: white;
-    font-weight: bold;
-    margin-top: 10px;
-    cursor: pointer;
-}
-
-/* Задания */
-.task-card {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 15px;
-    margin-bottom: 12px;
-    border-radius: 15px;
-    background: #121218;
-    border: 1px solid #1a1a1a;
-}
-
-.task-btn {
-    background: #fff;
-    color: #000;
-    border: none;
-    padding: 8px 15px;
-    border-radius: 8px;
-    font-weight: bold;
-    cursor: pointer;
-}
-
-
-body {
-    background-color: #000;
-    color: white;
-    font-family: sans-serif;
-    margin: 0;
-    padding: 0;
-}
-
-.screen { display: none; padding: 20px; padding-bottom: 80px; }
-.active { display: block; }
 
 /* Кнопки действий */
-.action-row { display: flex; gap: 10px; margin: 20px; }
+.action-row { display: flex; gap: 10px; margin-top: auto; padding: 10px; }
 .btn-action {
-    flex: 1;
-    background: #4a69da;
-    border: none;
-    color: white;
-    padding: 12px;
-    border-radius: 10px;
-    font-weight: bold;
+    flex: 1; background: var(--accent-blue); border: none; color: white;
+    padding: 15px; border-radius: 12px; font-weight: bold; cursor: pointer;
 }
-.history-btn { background: #1c2541; flex: 0.3; }
+.history-btn { background: #1c2541; flex: 0.3; font-size: 18px; }
 
-/* Раздел Друзья */
-.ref-header { font-size: 13px; color: #ccc; margin-bottom: 20px; }
-.ref-main-card {
-    background: #0d142b;
-    padding: 20px;
-    border-radius: 15px;
-    margin-bottom: 20px;
+/* Списки (Друзья, Задания, История) */
+.friend-item, .task-row, .history-item {
+    background: var(--card-bg); margin-bottom: 10px;
+    padding: 15px; border-radius: 15px; display: flex; align-items: center;
 }
-.ref-link-display {
-    background: #1c2541;
-    padding: 10px;
-    border-radius: 8px;
-    font-size: 14px;
-    color: #4a69da;
-    margin: 10px 0;
-}
+.ref-main-card { background: #0d142b; padding: 20px; border-radius: 15px; margin-bottom: 20px; }
+.ref-link-display { background: #1c2541; padding: 12px; border-radius: 10px; font-size: 13px; color: var(--accent-blue); margin: 15px 0; word-break: break-all; }
 .ref-action-buttons { display: flex; gap: 10px; }
-.btn-invite-main { flex: 1; background: #4a69da; border: none; color: white; border-radius: 8px; padding: 10px; }
-.btn-copy-icon { background: #2d3b61; border: none; color: white; width: 45px; border-radius: 8px; }
+.btn-invite-main { flex: 1; background: var(--accent-blue); border: none; color: white; border-radius: 10px; padding: 12px; font-weight: bold; }
+.btn-copy-icon { background: #2d3b61; border: none; color: white; width: 50px; border-radius: 10px; }
 
-.friend-item {
-    background: linear-gradient(90deg, #13072e, #0a0a0f);
-    border: 1px solid #3d1671;
-    margin-bottom: 8px;
-    padding: 12px;
-    border-radius: 10px;
-    display: flex;
-    justify-content: space-between;
-}
-
-/* Задания */
-.task-row {
-    background: #0a1128;
-    margin-bottom: 10px;
-    padding: 15px;
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
-    gap: 15px;
-}
-.task-icon { font-size: 20px; color: #4a69da; }
-.task-details { flex: 1; }
-.task-name { font-weight: bold; }
-.task-price { font-size: 12px; color: #7a8bb2; }
-.task-action-btn { background: #4a69da; border: none; color: white; padding: 5px 15px; border-radius: 15px; }
-.completed { opacity: 0.6; }
-.task-done-check { color: #2ecc71; font-size: 20px; }
-
-/* История кошелька */
-.history-item {
-    background: #0a1128;
-    margin-bottom: 10px;
-    padding: 15px;
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
+/* История специфично */
 .hist-icon-circle {
-    width: 30px; height: 30px; border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
+    width: 35px; height: 35px; border-radius: 50%; display: flex;
+    align-items: center; justify-content: center; margin-right: 15px;
 }
-.negative .hist-icon-circle { border: 2px solid #ff3b30; color: #ff3b30; }
-.positive .hist-icon-circle { border: 2px solid #4cd964; color: #4cd964; }
-.hist-date { font-size: 11px; color: #7a8bb2; }
+.positive .hist-icon-circle { border: 2px solid #2ecc71; color: #2ecc71; }
+.negative .hist-icon-circle { border: 2px solid #e74c3c; color: #e74c3c; }
 
 /* Навигация */
 .bottom-nav {
-    position: fixed; bottom: 0; width: 100%; height: 65px;
-    background: #050a1a; display: flex; justify-content: space-around;
-    align-items: center; border-top: 1px solid #1c2541;
+    position: fixed; bottom: 0; width: 100%; max-width: 500px;
+    height: 75px; background: #050a1a; display: flex;
+    justify-content: space-around; align-items: center;
+    border-top: 1px solid #1c2541; z-index: 1000; padding-bottom: 15px;
 }
-.nav-item { display: flex; flex-direction: column; align-items: center; font-size: 12px; color: #7a8bb2; }
+.nav-item { display: flex; flex-direction: column; align-items: center; color: var(--text-gray); font-size: 11px; opacity: 0.6; }
+.nav-item.active { opacity: 1; color: white; }
+.nav-item i { font-size: 20px; margin-bottom: 5px; }
 
 /* Модалки */
-.modal { display: none; position: fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); }
-.modal-content { background:#0d142b; margin: 30% auto; padding: 20px; width: 80%; border-radius: 15px; text-align: center; }
-.modal-content input { width: 90%; padding: 10px; margin: 10px 0; background: #1c2541; border: none; color: white; }
-
-let balance = 10.000;
-let historyData = JSON.parse(localStorage.getItem('era_history')) || [
-    { type: "Вывод", amount: -11, date: "08:59 25 Dec 2025", isPositive: false },
-    { type: "Пополнение", amount: 2.698, date: "11:40 17 Dec 2025", isPositive: true }
-];
-
-function updateDisplay() {
-    document.getElementById('main-balance').innerText = balance.toFixed(3);
-    renderHistory();
+.overlay {
+    position: fixed; inset: 0; background: rgba(0,0,0,0.85);
+    display: none; align-items: center; justify-content: center; z-index: 2000;
 }
-
-function showTab(tabId) {
-    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-    document.getElementById(tabId).classList.add('active');
-}
-
-function openModal(id) { document.getElementById(id).style.display = 'block'; }
-function closeModal() { document.querySelectorAll('.modal').forEach(m => m.style.display = 'none'); }
-
-function testDeposit() {
-    let val = parseFloat(document.getElementById('dep-input').value);
-    if (val > 0) {
-        balance += val;
-        addRecord("Пополнение", val, true);
-        closeModal();
-        updateDisplay();
-    }
-}
-
-function testWithdraw() {
-    let val = parseFloat(document.getElementById('with-input').value);
-    if (val > 0 && val <= balance) {
-        balance -= val;
-        addRecord("Вывод", -val, false);
-        closeModal();
-        updateDisplay();
-    }
-}
-
-function addRecord(type, amt, isPos) {
-    const now = new Date();
-    const dateStr = now.getHours() + ":" + (now.getMinutes()<10?'0':'') + now.getMinutes() + " " + now.getDate() + " Jan 2026";
-    historyData.unshift({ type: type, amount: amt, date: dateStr, isPositive: isPos });
-    localStorage.setItem('era_history', JSON.stringify(historyData));
-}
-
-function renderHistory() {
-    const container = document.getElementById('history-list');
-    if (!container) return;
-    container.innerHTML = historyData.map(item => `
-        <div class="history-item ${item.isPositive ? 'positive' : 'negative'}">
-            <div style="display:flex; align-items:center; gap:15px;">
-                <div class="hist-icon-circle"><i class="fas ${item.isPositive ? 'fa-plus' : 'fa-minus'}"></i></div>
-                <div>
-                    <div class="hist-type">${item.type}</div>
-                    <div class="hist-date">${item.date}</div>
-                </div>
-            </div>
-            <div class="hist-amount">${item.amount > 0 ? '+' : ''}${item.amount} <i class="fab fa-ethereum"></i></div>
-        </div>
-    `).join('');
-}
-
-// Запуск
-updateDisplay();
+.modal-content { background: #0d142b; padding: 30px; border-radius: 25px; width: 85%; text-align: center; }
+.modal-content input { width: 100%; padding: 15px; background: #1c2541; border: none; color: white; border-radius: 12px; margin: 20px 0; text-align: center; font-size: 18px; }
+.btn-submit { width: 100%; padding: 15px; background: var(--accent-blue); border: none; color: white; border-radius: 12px; font-weight: bold; margin-bottom: 10px; }
