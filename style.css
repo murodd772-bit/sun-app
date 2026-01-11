@@ -241,3 +241,106 @@ body {
     cursor: pointer;
 }
 
+
+body {
+    background-color: #000;
+    color: white;
+    font-family: sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.screen { display: none; padding: 20px; padding-bottom: 80px; }
+.active { display: block; }
+
+/* Кнопки действий */
+.action-row { display: flex; gap: 10px; margin: 20px; }
+.btn-action {
+    flex: 1;
+    background: #4a69da;
+    border: none;
+    color: white;
+    padding: 12px;
+    border-radius: 10px;
+    font-weight: bold;
+}
+.history-btn { background: #1c2541; flex: 0.3; }
+
+/* Раздел Друзья */
+.ref-header { font-size: 13px; color: #ccc; margin-bottom: 20px; }
+.ref-main-card {
+    background: #0d142b;
+    padding: 20px;
+    border-radius: 15px;
+    margin-bottom: 20px;
+}
+.ref-link-display {
+    background: #1c2541;
+    padding: 10px;
+    border-radius: 8px;
+    font-size: 14px;
+    color: #4a69da;
+    margin: 10px 0;
+}
+.ref-action-buttons { display: flex; gap: 10px; }
+.btn-invite-main { flex: 1; background: #4a69da; border: none; color: white; border-radius: 8px; padding: 10px; }
+.btn-copy-icon { background: #2d3b61; border: none; color: white; width: 45px; border-radius: 8px; }
+
+.friend-item {
+    background: linear-gradient(90deg, #13072e, #0a0a0f);
+    border: 1px solid #3d1671;
+    margin-bottom: 8px;
+    padding: 12px;
+    border-radius: 10px;
+    display: flex;
+    justify-content: space-between;
+}
+
+/* Задания */
+.task-row {
+    background: #0a1128;
+    margin-bottom: 10px;
+    padding: 15px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+.task-icon { font-size: 20px; color: #4a69da; }
+.task-details { flex: 1; }
+.task-name { font-weight: bold; }
+.task-price { font-size: 12px; color: #7a8bb2; }
+.task-action-btn { background: #4a69da; border: none; color: white; padding: 5px 15px; border-radius: 15px; }
+.completed { opacity: 0.6; }
+.task-done-check { color: #2ecc71; font-size: 20px; }
+
+/* История кошелька */
+.history-item {
+    background: #0a1128;
+    margin-bottom: 10px;
+    padding: 15px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.hist-icon-circle {
+    width: 30px; height: 30px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+}
+.negative .hist-icon-circle { border: 2px solid #ff3b30; color: #ff3b30; }
+.positive .hist-icon-circle { border: 2px solid #4cd964; color: #4cd964; }
+.hist-date { font-size: 11px; color: #7a8bb2; }
+
+/* Навигация */
+.bottom-nav {
+    position: fixed; bottom: 0; width: 100%; height: 65px;
+    background: #050a1a; display: flex; justify-content: space-around;
+    align-items: center; border-top: 1px solid #1c2541;
+}
+.nav-item { display: flex; flex-direction: column; align-items: center; font-size: 12px; color: #7a8bb2; }
+
+/* Модалки */
+.modal { display: none; position: fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); }
+.modal-content { background:#0d142b; margin: 30% auto; padding: 20px; width: 80%; border-radius: 15px; text-align: center; }
+.modal-content input { width: 90%; padding: 10px; margin: 10px 0; background: #1c2541; border: none; color: white; }
