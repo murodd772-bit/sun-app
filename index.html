@@ -2,18 +2,27 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ERA App Clone</title>
-    <link rel="stylesheet" href="style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>SUN APP</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <div class="app-container">
+<div class="app-container">
+    <div class="screens-wrapper">
+        
         <div id="home" class="screen active">
+            <div class="promo-badge" id="speed-badge">+1.0% в день</div>
+            
             <div class="balance-section">
                 <div class="balance-title">Ваш баланс</div>
-                <div class="balance-value"><span id="main-balance">10.000</span> <i class="fab fa-ethereum"></i></div>
+                <div class="balance" id="main-balance">0.000000000</div>
+            </div>
+            
+            <div class="ton-logo-circle">
+                <i class="fab fa-ethereum"></i>
             </div>
 
             <div class="action-row">
@@ -27,56 +36,50 @@
 
         <div id="friends" class="screen">
             <div class="ref-header">
-                Приглашайте друзей и получайте 10% от их дохода за каждого приглашенного вами пользователя! Вы также будете увеличивать свой ежедневный доход на 0.1%, максимально: 2% в день.
+                Приглашайте друзей и получайте 10% от их дохода! Ваш доход увеличится на 0.1% за каждого друга.
             </div>
             
             <div class="ref-main-card">
                 <div class="ref-title">Ваша ссылка</div>
-                <div class="ref-link-display">t.me/EraStakingBot?start=7849326904</div>
+                <div id="ref-link-text" class="ref-link-display">Загрузка...</div>
                 <div class="ref-action-buttons">
-                    <button class="btn-invite-main">
+                    <button class="btn-invite-main" onclick="shareInvite()">
                         <i class="fas fa-user-plus"></i> Пригласить друга
                     </button>
-                    <button class="btn-copy-icon">
+                    <button class="btn-copy-icon" onclick="copyLink()">
                         <i class="fas fa-copy"></i>
                     </button>
                 </div>
             </div>
 
-            <h2 class="list-title">Список друзей: 10</h2>
+            <h2 class="list-title">Список друзей: <span id="friends-count">3</span></h2>
             <div class="friends-list">
                 <div class="friend-item">
-                    <span class="friend-name">Tayler</span>
+                    <span>Tayler</span>
                     <div class="friend-reward">0.007132804 <i class="fab fa-ethereum"></i></div>
                 </div>
-                <div class="friend-item"><span class="friend-name">Wayne Mitchell</span><div class="friend-reward">0 <i class="fab fa-ethereum"></i></div></div>
-                <div class="friend-item"><span class="friend-name">Cacaroto Lopes</span><div class="friend-reward">0 <i class="fab fa-ethereum"></i></div></div>
+                <div class="friend-item">
+                    <span>Wayne Mitchell</span>
+                    <div class="friend-reward">0.000000000 <i class="fab fa-ethereum"></i></div>
+                </div>
             </div>
         </div>
 
         <div id="earn" class="screen">
-            <h2 class="list-title" style="text-align:center;">Выполняйте задания и получайте награду</h2>
+            <h2 class="list-title" style="text-align:center;">Выполняйте задания</h2>
             <div class="tasks-list">
                 <div class="task-row">
-                    <div class="task-icon ad-icon"><i class="fas fa-ad"></i></div>
+                    <div class="task-icon"><i class="fas fa-ad"></i></div>
                     <div class="task-details">
                         <div class="task-name">Watch AD 2/10</div>
                         <div class="task-price">+0.001 TON</div>
                     </div>
-                    <button class="task-action-btn">Start</button>
+                    <button class="task-action-btn" onclick="watchAd()">Start</button>
                 </div>
                 <div class="task-row completed">
-                    <div class="task-icon bonus-icon"><i class="fas fa-gem"></i></div>
+                    <div class="task-icon"><i class="fas fa-gem"></i></div>
                     <div class="task-details">
                         <div class="task-name">Приветственный бонус</div>
-                        <div class="task-price">+0.001 TON</div>
-                    </div>
-                    <div class="task-done-check"><i class="fas fa-check-circle"></i></div>
-                </div>
-                <div class="task-row completed">
-                    <div class="task-icon tg-icon"><i class="fab fa-telegram-plane"></i></div>
-                    <div class="task-details">
-                        <div class="task-name">Subscribe to ERA</div>
                         <div class="task-price">+0.001 TON</div>
                     </div>
                     <div class="task-done-check"><i class="fas fa-check-circle"></i></div>
@@ -86,35 +89,43 @@
 
         <div id="history-screen" class="screen">
             <h2 class="list-title">История кошелька</h2>
-            <div id="history-list" class="history-container">
-                </div>
+            <div id="history-list" class="history-container"></div>
+            <button class="btn-submit" onclick="showTab('home')" style="margin-top:20px; background:#1c2541">Назад</button>
         </div>
 
-        <nav class="bottom-nav">
-            <div class="nav-item" onclick="showTab('home')"><i class="fas fa-home"></i><span>Home</span></div>
-            <div class="nav-item" onclick="showTab('friends')"><i class="fas fa-users"></i><span>Friends</span></div>
-            <div class="nav-item" onclick="showTab('earn')"><i class="fas fa-coins"></i><span>Earn</span></div>
-        </nav>
     </div>
 
-    <div id="depositModal" class="modal">
-        <div class="modal-content">
-            <h3>Пополнение (Тест)</h3>
-            <input type="number" id="dep-input" placeholder="Введите сумму">
-            <button onclick="testDeposit()">Подтвердить</button>
-            <button onclick="closeModal()">Закрыть</button>
+    <nav class="bottom-nav">
+        <div class="nav-item active" onclick="showTab('home', this)">
+            <i class="fas fa-home"></i><span>Home</span>
         </div>
-    </div>
-
-    <div id="withdrawModal" class="modal">
-        <div class="modal-content">
-            <h3>Вывод (Тест)</h3>
-            <input type="number" id="with-input" placeholder="Введите сумму">
-            <button onclick="testWithdraw()">Вывести</button>
-            <button onclick="closeModal()">Закрыть</button>
+        <div class="nav-item" onclick="showTab('friends', this)">
+            <i class="fas fa-users"></i><span>Friends</span>
         </div>
-    </div>
+        <div class="nav-item" onclick="showTab('earn', this)">
+            <i class="fas fa-coins"></i><span>Earn</span>
+        </div>
+    </nav>
+</div>
 
-    <script src="script.js"></script>
+<div id="depositModal" class="overlay">
+    <div class="modal-content">
+        <h3>Пополнение (Тест)</h3>
+        <input type="number" id="dep-input" placeholder="Введите сумму">
+        <button class="btn-submit" onclick="testDeposit()">Подтвердить</button>
+        <button class="btn-submit" style="background:none" onclick="closeModal()">Отмена</button>
+    </div>
+</div>
+
+<div id="withdrawModal" class="overlay">
+    <div class="modal-content">
+        <h3>Вывод (Тест)</h3>
+        <input type="number" id="with-input" placeholder="Введите сумму">
+        <button class="btn-submit" onclick="testWithdraw()">Вывести</button>
+        <button class="btn-submit" style="background:none" onclick="closeModal()">Отмена</button>
+    </div>
+</div>
+
+<script src="script.js"></script>
 </body>
 </html>
