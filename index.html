@@ -20,80 +20,89 @@
                 <div class="balance" id="main-balance">10.000000000</div>
             </div>
             
-            <div class="ton-logo-circle">
-                <svg width="100" height="100" viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M28 56C43.464 56 56 43.464 56 28C56 12.536 43.464 0 28 0C12.536 0 0 12.536 0 28C0 43.464 12.536 56 28 56Z" fill="#0088CC"/>
-                    <path d="M12.1364 16.3887C12.1364 15.5413 12.8719 14.8821 13.7042 15.024L41.3468 19.7397C42.0641 19.8621 42.5186 20.6121 42.2355 21.2829L28.8797 52.9157C28.608 53.5593 27.6976 53.5658 27.4168 52.9268L12.4497 18.8821C12.2479 18.4231 12.1364 17.9267 12.1364 17.424V16.3887Z" fill="white"/>
-                </svg>
+            <div class="ton-logo-container">
+                <div class="ton-circle">
+                    <svg width="80" height="80" viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M28 56C43.464 56 56 43.464 56 28C56 12.536 43.464 0 28 0C12.536 0 0 12.536 0 28C0 43.464 12.536 56 28 56Z" fill="#0088CC"/>
+                        <path d="M12.1364 16.3887C12.1364 15.5413 12.8719 14.8821 13.7042 15.024L41.3468 19.7397C42.0641 19.8621 42.5186 20.6121 42.2355 21.2829L28.8797 52.9157C28.608 53.5593 27.6976 53.5658 27.4168 52.9268L12.4497 18.8821C12.2479 18.4231 12.1364 17.9267 12.1364 17.424V16.3887Z" fill="white"/>
+                    </svg>
+                </div>
             </div>
 
-            <div class="action-row main-actions">
-                <button class="btn-action" onclick="openModal('depositModal')">Пополнить</button>
-                <button class="btn-action" onclick="openModal('withdrawModal')">Вывести</button>
-                <button class="btn-action history-btn" onclick="showTab('history-screen')">
+            <div class="main-buttons-group">
+                <button class="btn-main" onclick="openModal('depositModal')">Пополнить</button>
+                <button class="btn-main" onclick="openModal('withdrawModal')">Вывести</button>
+                <button class="btn-history" onclick="showTab('history-screen')">
                     <i class="fas fa-clock-rotate-left"></i>
                 </button>
             </div>
         </div>
 
         <div id="rating" class="screen">
-            <h2 class="screen-title">Рейтинг</h2>
-            <div class="list-container">
-                <div class="rating-card top-1"><span>👑 SARDOR</span><span>1357 TON</span></div>
-                <div class="rating-card"><span>🥈 Alexis</span><span>1005 TON</span></div>
-                <div class="rating-card"><span>🥉 Mike</span><span>850 TON</span></div>
+            <h2 class="screen-title">Рейтинг майнеров</h2>
+            <div class="rating-list">
+                <div class="rating-item top-rank">
+                    <div class="rank-info"><span>1</span> 👑 SARDOR</div>
+                    <div class="rank-val">1357.00 TON</div>
+                </div>
+                <div class="rating-item">
+                    <div class="rank-info"><span>2</span> 🥈 Alexis</div>
+                    <div class="rank-val">1005.42 TON</div>
+                </div>
             </div>
-            <div class="user-sticky-footer">
-                <div class="rating-card my-card">
-                    <span>Вы (№124)</span>
-                    <span>10.00 TON</span>
+            <div class="sticky-user">
+                <div class="rating-item my-rank">
+                    <div class="rank-info"><span>124</span> Вы</div>
+                    <div class="rank-val">10.00 TON</div>
                 </div>
             </div>
         </div>
 
         <div id="games" class="screen">
-            <h2 class="screen-title">Игры</h2>
-            <div class="hero-game-box">
-                <div id="hero-status">Лидер: Ожидание</div>
+            <h2 class="screen-title">Игровой раздел</h2>
+            <div class="hero-card">
+                <div class="hero-header">HERO GAME</div>
+                <div id="hero-status">Лидер: Ожидание...</div>
                 <div class="hero-timer">Банк: 0.00 TON</div>
-                <button class="btn-action">Стать героем</button>
+                <button class="btn-hero" onclick="joinHero()">Стать героем (0.1 TON)</button>
             </div>
-            <div class="game-row" onclick="alert('CoinFlip')">
-                <span>CoinFlip</span> <i class="fas fa-coins"></i>
+            <div class="game-card" onclick="playFlip()">
+                <div class="game-name">CoinFlip</div>
+                <i class="fas fa-coins"></i>
             </div>
         </div>
 
         <div id="friends" class="screen">
-            <div class="ref-header">Приглашайте друзей и получайте 10% от их дохода!</div>
-            <div class="ref-main-card">
-                <div class="ref-link-display">t.me/sun_app_bot?start=user</div>
-                <div class="ref-action-buttons">
-                    <button class="btn-invite-main" onclick="copyLink()">Пригласить друга</button>
-                    <button class="btn-copy-icon" onclick="copyLink()"><i class="fas fa-copy"></i></button>
+            <div class="ref-promo">Приглашайте друзей и получайте 10% от их дохода! +0.1% к скорости за каждого.</div>
+            <div class="ref-card">
+                <div class="ref-title">Ваша ссылка</div>
+                <div class="ref-link" id="ref-link-text">Загрузка...</div>
+                <div class="ref-actions">
+                    <button class="btn-invite" onclick="copyLink()">Пригласить друга</button>
+                    <button class="btn-copy" onclick="copyLink()"><i class="fas fa-copy"></i></button>
                 </div>
             </div>
-            <div class="friend-item">
-                <span>Tayler</span>
-                <span class="friend-reward">0.007 TON</span>
+            <div class="friends-list">
+                <div class="friend-row"><span>Tayler</span> <b>0.007 TON</b></div>
             </div>
         </div>
 
         <div id="earn" class="screen">
-            <h2 class="screen-title">Задания</h2>
-            <div class="task-row">
-                <div class="task-icon"><i class="fas fa-ad"></i></div>
-                <div class="task-details">
-                    <div class="task-name">Watch AD</div>
-                    <div class="task-price">+0.01 TON</div>
+            <h2 class="screen-title">Заработать</h2>
+            <div class="task-card">
+                <div class="task-icon"><i class="fas fa-play-circle"></i></div>
+                <div class="task-body">
+                    <div class="t-name">Смотреть рекламу</div>
+                    <div class="t-reward">+0.01 TON</div>
                 </div>
-                <button class="task-action-btn">Start</button>
+                <button class="btn-start">Начать</button>
             </div>
         </div>
 
         <div id="history-screen" class="screen">
-            <h2 class="screen-title">История</h2>
-            <div id="history-list"></div>
-            <button class="btn-submit" onclick="showTab('home')" style="margin-top:20px; background:#111">Назад</button>
+            <h2 class="screen-title">История операций</h2>
+            <div id="history-container"></div>
+            <button class="btn-back" onclick="showTab('home')">Назад</button>
         </div>
 
     </div>
@@ -107,7 +116,14 @@
     </nav>
 </div>
 
-<div id="depositModal" class="overlay"><div class="modal"><input type="number" id="dep-input" placeholder="0.00"><button class="btn-submit" onclick="testDeposit()">ОК</button></div></div>
+<div id="depositModal" class="overlay">
+    <div class="modal-box">
+        <h3>Пополнение</h3>
+        <input type="number" id="dep-input" placeholder="Введите сумму">
+        <button class="btn-ok" onclick="deposit()">ОК</button>
+        <button class="btn-close" onclick="closeModal()">Закрыть</button>
+    </div>
+</div>
 
 <script src="script.js"></script>
 </body>
