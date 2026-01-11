@@ -66,8 +66,8 @@ body {
 }
 
 .ton-logo-circle {
-    width: 150px;
-    height: 150px;
+    width: 250px;
+    height: 250px;
     background: var(--accent-blue);
     border-radius: 50%;
     align-self: center;
@@ -240,3 +240,4 @@ body {
     font-weight: bold;
     cursor: pointer;
 }
+
