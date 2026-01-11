@@ -1,16 +1,13 @@
 :root {
-    --accent-blue: #4a69da;
-    --bg-black: #000;
-    --card-bg: #0a1128;
-    --text-gray: #7a8bb2;
+    --accent: #4a69da;
+    --bg: #000;
+    --card: #0a1128;
+    --text-sec: #7a8bb2;
 }
 
-* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 
-body {
-    margin: 0; background: var(--bg-black); color: white;
-    font-family: -apple-system, sans-serif; height: 100vh; overflow: hidden;
-}
+body { background: var(--bg); color: white; font-family: sans-serif; height: 100vh; overflow: hidden; }
 
 .app-container { display: flex; flex-direction: column; height: 100%; max-width: 500px; margin: 0 auto; }
 
@@ -19,63 +16,39 @@ body {
 .screen { display: none; padding: 20px; padding-bottom: 100px; flex-direction: column; }
 .screen.active { display: flex; }
 
-/* Майнинг */
-.promo-badge {
-    background: rgba(74, 105, 218, 0.1); border-bottom: 2px solid var(--accent-blue);
-    padding: 8px 15px; border-radius: 10px; align-self: center; margin-top: 10px;
-}
-.balance-section { text-align: center; margin: 30px 0; }
-.balance { font-size: 38px; font-weight: bold; font-family: monospace; margin-top: 10px; }
+/* Логотип и Баланс */
+.top-badge { background: rgba(74, 105, 218, 0.1); border: 1px solid var(--accent); padding: 5px 15px; border-radius: 10px; align-self: center; font-size: 14px; }
+.balance-section { text-align: center; margin: 25px 0; }
+.balance { font-size: 36px; font-weight: bold; font-family: monospace; }
 .ton-logo-circle {
-    width: 180px; height: 180px; background: var(--accent-blue);
-    border-radius: 50%; align-self: center; display: flex;
-    align-items: center; justify-content: center; font-size: 80px;
-    box-shadow: 0 0 40px rgba(74, 105, 218, 0.4); margin-bottom: 30px;
+    width: 200px; height: 200px; background: var(--accent); border-radius: 50%;
+    align-self: center; display: flex; align-items: center; justify-content: center;
+    font-size: 80px; box-shadow: 0 0 40px rgba(74, 105, 218, 0.4); margin: 30px 0;
 }
 
-/* Кнопки действий */
-.action-row { display: flex; gap: 10px; margin-top: auto; padding: 10px; }
-.btn-action {
-    flex: 1; background: var(--accent-blue); border: none; color: white;
-    padding: 15px; border-radius: 12px; font-weight: bold; cursor: pointer;
-}
-.history-btn { background: #1c2541; flex: 0.3; font-size: 18px; }
+/* Кнопки */
+.action-row { display: flex; gap: 10px; margin-top: auto; }
+.btn-action { flex: 1; background: var(--accent); border: none; color: white; padding: 15px; border-radius: 12px; font-weight: bold; cursor: pointer; }
+.history-btn { background: #1c2541; flex: 0.4; font-size: 20px; }
 
-/* Списки (Друзья, Задания, История) */
-.friend-item, .task-row, .history-item {
-    background: var(--card-bg); margin-bottom: 10px;
-    padding: 15px; border-radius: 15px; display: flex; align-items: center;
-}
-.ref-main-card { background: #0d142b; padding: 20px; border-radius: 15px; margin-bottom: 20px; }
-.ref-link-display { background: #1c2541; padding: 12px; border-radius: 10px; font-size: 13px; color: var(--accent-blue); margin: 15px 0; word-break: break-all; }
-.ref-action-buttons { display: flex; gap: 10px; }
-.btn-invite-main { flex: 1; background: var(--accent-blue); border: none; color: white; border-radius: 10px; padding: 12px; font-weight: bold; }
-.btn-copy-icon { background: #2d3b61; border: none; color: white; width: 50px; border-radius: 10px; }
-
-/* История специфично */
-.hist-icon-circle {
-    width: 35px; height: 35px; border-radius: 50%; display: flex;
-    align-items: center; justify-content: center; margin-right: 15px;
-}
-.positive .hist-icon-circle { border: 2px solid #2ecc71; color: #2ecc71; }
-.negative .hist-icon-circle { border: 2px solid #e74c3c; color: #e74c3c; }
-
-/* Навигация */
+/* Навигация (5 колонок) */
 .bottom-nav {
-    position: fixed; bottom: 0; width: 100%; max-width: 500px;
-    height: 75px; background: #050a1a; display: flex;
-    justify-content: space-around; align-items: center;
-    border-top: 1px solid #1c2541; z-index: 1000; padding-bottom: 15px;
+    position: fixed; bottom: 0; width: 100%; max-width: 500px; height: 75px;
+    background: #0a0e1a; display: grid; grid-template-columns: repeat(5, 1fr);
+    align-items: center; border-top: 1px solid #1c2541;
 }
-.nav-item { display: flex; flex-direction: column; align-items: center; color: var(--text-gray); font-size: 11px; opacity: 0.6; }
+.nav-item { display: flex; flex-direction: column; align-items: center; color: var(--text-sec); font-size: 10px; opacity: 0.6; }
 .nav-item.active { opacity: 1; color: white; }
-.nav-item i { font-size: 20px; margin-bottom: 5px; }
+.nav-item i { font-size: 18px; margin-bottom: 4px; }
+
+/* Карточки */
+.rating-card, .task-card, .friend-row, .game-item { background: var(--card); padding: 15px; border-radius: 15px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; }
+.hero-card { background: linear-gradient(135deg, #1c2541, #4a69da); padding: 20px; border-radius: 15px; text-align: center; margin-bottom: 15px; }
+.top-1 { border: 1px solid #ffd700; }
 
 /* Модалки */
-.overlay {
-    position: fixed; inset: 0; background: rgba(0,0,0,0.85);
-    display: none; align-items: center; justify-content: center; z-index: 2000;
-}
-.modal-content { background: #0d142b; padding: 30px; border-radius: 25px; width: 85%; text-align: center; }
-.modal-content input { width: 100%; padding: 15px; background: #1c2541; border: none; color: white; border-radius: 12px; margin: 20px 0; text-align: center; font-size: 18px; }
-.btn-submit { width: 100%; padding: 15px; background: var(--accent-blue); border: none; color: white; border-radius: 12px; font-weight: bold; margin-bottom: 10px; }
+.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.85); display: none; align-items: center; justify-content: center; z-index: 2000; }
+.modal-content { background: #0d142b; padding: 25px; border-radius: 20px; width: 85%; text-align: center; }
+.modal-content input { width: 100%; padding: 12px; margin: 15px 0; background: #1c2541; border: none; color: white; border-radius: 10px; text-align: center; }
+.btn-submit { background: var(--accent); border: none; color: white; padding: 12px 20px; border-radius: 10px; font-weight: bold; cursor: pointer; width: 100%; }
+.btn-cancel { background: none; border: none; color: var(--text-sec); margin-top: 10px; }
