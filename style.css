@@ -1,54 +1,46 @@
-:root {
-    --accent: #4a69da;
-    --bg: #000;
-    --card: #0a1128;
-    --text-sec: #7a8bb2;
-}
-
-* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-
+:root { --accent: #0088CC; --bg: #050508; --card: #0a0a0f; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
 body { background: var(--bg); color: white; font-family: sans-serif; height: 100vh; overflow: hidden; }
-
 .app-container { display: flex; flex-direction: column; height: 100%; max-width: 500px; margin: 0 auto; }
-
 .screens-wrapper { flex: 1; overflow-y: auto; position: relative; }
-
-.screen { display: none; padding: 20px; padding-bottom: 100px; flex-direction: column; }
+.screen { display: none; padding: 20px; padding-bottom: 120px; flex-direction: column; }
 .screen.active { display: flex; }
 
-/* Логотип и Баланс */
-.top-badge { background: rgba(74, 105, 218, 0.1); border: 1px solid var(--accent); padding: 5px 15px; border-radius: 10px; align-self: center; font-size: 14px; }
-.balance-section { text-align: center; margin: 25px 0; }
-.balance { font-size: 36px; font-weight: bold; font-family: monospace; }
+/* Логотип TON */
 .ton-logo-circle {
-    width: 200px; height: 200px; background: var(--accent); border-radius: 50%;
+    width: 220px; height: 220px; background: var(--accent); border-radius: 50%;
     align-self: center; display: flex; align-items: center; justify-content: center;
-    font-size: 80px; box-shadow: 0 0 40px rgba(74, 105, 218, 0.4); margin: 30px 0;
+    box-shadow: 0 0 30px rgba(0, 136, 204, 0.4); margin: 40px 0;
 }
 
-/* Кнопки */
-.action-row { display: flex; gap: 10px; margin-top: auto; }
-.btn-action { flex: 1; background: var(--accent); border: none; color: white; padding: 15px; border-radius: 12px; font-weight: bold; cursor: pointer; }
-.history-btn { background: #1c2541; flex: 0.4; font-size: 20px; }
+.balance-section { text-align: center; margin-top: 20px; }
+.balance { font-size: 36px; font-weight: bold; font-family: monospace; }
 
-/* Навигация (5 колонок) */
-.bottom-nav {
-    position: fixed; bottom: 0; width: 100%; max-width: 500px; height: 75px;
-    background: #0a0e1a; display: grid; grid-template-columns: repeat(5, 1fr);
-    align-items: center; border-top: 1px solid #1c2541;
-}
-.nav-item { display: flex; flex-direction: column; align-items: center; color: var(--text-sec); font-size: 10px; opacity: 0.6; }
-.nav-item.active { opacity: 1; color: white; }
-.nav-item i { font-size: 18px; margin-bottom: 4px; }
+/* Кнопки внизу экрана */
+.main-actions { margin-top: auto; padding-bottom: 20px; display: flex; gap: 10px; }
+.btn-action { flex: 1; background: #111; border: 1px solid #333; color: white; padding: 16px; border-radius: 18px; font-weight: bold; cursor: pointer; }
+.history-btn { background: #1c2541; flex: 0.4; }
 
-/* Карточки */
-.rating-card, .task-card, .friend-row, .game-item { background: var(--card); padding: 15px; border-radius: 15px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; }
-.hero-card { background: linear-gradient(135deg, #1c2541, #4a69da); padding: 20px; border-radius: 15px; text-align: center; margin-bottom: 15px; }
-.top-1 { border: 1px solid #ffd700; }
+/* Навигация */
+.bottom-nav { position: fixed; bottom: 0; width: 100%; max-width: 500px; height: 75px; background: #0a0a0f; display: grid; grid-template-columns: repeat(5, 1fr); align-items: center; border-top: 1px solid #1a1a1a; z-index: 1000; }
+.nav-item { display: flex; flex-direction: column; align-items: center; color: #a1a1a1; font-size: 10px; opacity: 0.6; }
+.nav-item.active { opacity: 1; color: var(--accent); }
 
-/* Модалки */
-.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.85); display: none; align-items: center; justify-content: center; z-index: 2000; }
-.modal-content { background: #0d142b; padding: 25px; border-radius: 20px; width: 85%; text-align: center; }
-.modal-content input { width: 100%; padding: 12px; margin: 15px 0; background: #1c2541; border: none; color: white; border-radius: 10px; text-align: center; }
-.btn-submit { background: var(--accent); border: none; color: white; padding: 12px 20px; border-radius: 10px; font-weight: bold; cursor: pointer; width: 100%; }
-.btn-cancel { background: none; border: none; color: var(--text-sec); margin-top: 10px; }
+/* Рейтинг Стики */
+.user-sticky-footer { position: fixed; bottom: 85px; left: 15px; right: 15px; max-width: 470px; margin: 0 auto; }
+.my-card { border: 2px solid var(--accent); background: #0a1128 !important; }
+
+/* Друзья и Задания */
+.ref-main-card { background: #0d142b; padding: 20px; border-radius: 15px; margin-bottom: 20px; }
+.ref-link-display { background: #1c2541; padding: 12px; border-radius: 10px; font-size: 14px; margin-bottom: 15px; color: var(--accent); }
+.ref-action-buttons { display: flex; gap: 10px; }
+.btn-invite-main { flex: 1; background: var(--accent); border: none; color: white; border-radius: 10px; padding: 12px; font-weight: bold; }
+.btn-copy-icon { background: #2d3b61; border: none; color: white; width: 50px; border-radius: 10px; }
+.friend-item, .task-row, .rating-card { background: #121218; padding: 15px; border-radius: 15px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; }
+
+.task-icon { color: var(--accent); font-size: 20px; margin-right: 15px; }
+.task-action-btn { background: var(--accent); border: none; color: white; padding: 8px 20px; border-radius: 20px; font-weight: bold; }
+
+.overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.8); display: none; align-items: center; justify-content: center; z-index: 2000; }
+.modal { background: #111; padding: 25px; border-radius: 20px; width: 85%; text-align: center; }
+.btn-submit { width: 100%; background: var(--accent); border: none; color: white; padding: 15px; border-radius: 12px; font-weight: bold; margin-top: 10px; }
