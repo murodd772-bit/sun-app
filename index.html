@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>ERA App</title>
+    <title>SUN App</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
@@ -14,17 +14,20 @@
     <div class="screens-wrapper">
         
         <div id="home" class="screen active">
-            <div class="top-badge">+1.0% в день</div>
+            <div class="promo-badge">+1.0% в день</div>
             <div class="balance-section">
                 <div class="balance-label">Ваш баланс</div>
                 <div class="balance" id="main-balance">10.000000000</div>
             </div>
             
             <div class="ton-logo-circle">
-                <i class="fab fa-ethereum"></i>
+                <svg width="100" height="100" viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M28 56C43.464 56 56 43.464 56 28C56 12.536 43.464 0 28 0C12.536 0 0 12.536 0 28C0 43.464 12.536 56 28 56Z" fill="#0088CC"/>
+                    <path d="M12.1364 16.3887C12.1364 15.5413 12.8719 14.8821 13.7042 15.024L41.3468 19.7397C42.0641 19.8621 42.5186 20.6121 42.2355 21.2829L28.8797 52.9157C28.608 53.5593 27.6976 53.5658 27.4168 52.9268L12.4497 18.8821C12.2479 18.4231 12.1364 17.9267 12.1364 17.424V16.3887Z" fill="white"/>
+                </svg>
             </div>
 
-            <div class="action-row">
+            <div class="action-row main-actions">
                 <button class="btn-action" onclick="openModal('depositModal')">Пополнить</button>
                 <button class="btn-action" onclick="openModal('withdrawModal')">Вывести</button>
                 <button class="btn-action history-btn" onclick="showTab('history-screen')">
@@ -34,54 +37,63 @@
         </div>
 
         <div id="rating" class="screen">
-            <h2 class="screen-title">Рейтинг майнеров</h2>
+            <h2 class="screen-title">Рейтинг</h2>
             <div class="list-container">
-                <div class="rating-card top-1"><span>👑 SARDOR</span><span>1357.00 TON</span></div>
-                <div class="rating-card"><span>🥈 Alexis</span><span>1005.42 TON</span></div>
-                <div class="rating-card"><span>🥉 Mike</span><span>850.11 TON</span></div>
+                <div class="rating-card top-1"><span>👑 SARDOR</span><span>1357 TON</span></div>
+                <div class="rating-card"><span>🥈 Alexis</span><span>1005 TON</span></div>
+                <div class="rating-card"><span>🥉 Mike</span><span>850 TON</span></div>
+            </div>
+            <div class="user-sticky-footer">
+                <div class="rating-card my-card">
+                    <span>Вы (№124)</span>
+                    <span>10.00 TON</span>
+                </div>
             </div>
         </div>
 
         <div id="games" class="screen">
             <h2 class="screen-title">Игры</h2>
-            <div class="hero-card">
+            <div class="hero-game-box">
                 <div id="hero-status">Лидер: Ожидание</div>
-                <div class="hero-bank">Банк: 0.00 TON</div>
-                <button class="btn-action" style="margin-top:10px">Стать героем (0.1 TON)</button>
+                <div class="hero-timer">Банк: 0.00 TON</div>
+                <button class="btn-action">Стать героем</button>
             </div>
-            <div class="game-item" onclick="alert('CoinFlip скоро!')">
-                <span>CoinFlip</span>
-                <i class="fas fa-coins"></i>
+            <div class="game-row" onclick="alert('CoinFlip')">
+                <span>CoinFlip</span> <i class="fas fa-coins"></i>
             </div>
         </div>
 
         <div id="friends" class="screen">
-            <p class="ref-info">Приглашайте друзей и получайте 10% от их дохода!</p>
-            <div class="ref-box">
-                <div class="ref-link" id="ref-link-text">t.me/sun_app_bot?start=user</div>
-                <button class="btn-submit" onclick="copyLink()">Копировать ссылку</button>
+            <div class="ref-header">Приглашайте друзей и получайте 10% от их дохода!</div>
+            <div class="ref-main-card">
+                <div class="ref-link-display">t.me/sun_app_bot?start=user</div>
+                <div class="ref-action-buttons">
+                    <button class="btn-invite-main" onclick="copyLink()">Пригласить друга</button>
+                    <button class="btn-copy-icon" onclick="copyLink()"><i class="fas fa-copy"></i></button>
+                </div>
             </div>
-            <h3 class="list-title">Ваши друзья</h3>
-            <div class="list-container">
-                <div class="friend-row"><span>Tayler</span><span>0.007 TON</span></div>
+            <div class="friend-item">
+                <span>Tayler</span>
+                <span class="friend-reward">0.007 TON</span>
             </div>
         </div>
 
         <div id="earn" class="screen">
             <h2 class="screen-title">Задания</h2>
-            <div class="task-card">
-                <div class="task-info">
+            <div class="task-row">
+                <div class="task-icon"><i class="fas fa-ad"></i></div>
+                <div class="task-details">
                     <div class="task-name">Watch AD</div>
-                    <div class="task-reward">+0.01 TON</div>
+                    <div class="task-price">+0.01 TON</div>
                 </div>
-                <button class="btn-start">Start</button>
+                <button class="task-action-btn">Start</button>
             </div>
         </div>
 
         <div id="history-screen" class="screen">
-            <h2 class="screen-title">История кошелька</h2>
-            <div id="history-list" class="list-container"></div>
-            <button class="btn-submit" onclick="showTab('home')" style="background:#1c2541; margin-top:20px">Назад</button>
+            <h2 class="screen-title">История</h2>
+            <div id="history-list"></div>
+            <button class="btn-submit" onclick="showTab('home')" style="margin-top:20px; background:#111">Назад</button>
         </div>
 
     </div>
@@ -95,23 +107,7 @@
     </nav>
 </div>
 
-<div id="depositModal" class="modal-overlay">
-    <div class="modal-content">
-        <h3>Пополнение</h3>
-        <input type="number" id="dep-input" placeholder="0.00">
-        <button class="btn-submit" onclick="testDeposit()">Подтвердить</button>
-        <button class="btn-cancel" onclick="closeModal()">Закрыть</button>
-    </div>
-</div>
-
-<div id="withdrawModal" class="modal-overlay">
-    <div class="modal-content">
-        <h3>Вывод</h3>
-        <input type="number" id="with-input" placeholder="0.00">
-        <button class="btn-submit" onclick="testWithdraw()">Вывести</button>
-        <button class="btn-cancel" onclick="closeModal()">Закрыть</button>
-    </div>
-</div>
+<div id="depositModal" class="overlay"><div class="modal"><input type="number" id="dep-input" placeholder="0.00"><button class="btn-submit" onclick="testDeposit()">ОК</button></div></div>
 
 <script src="script.js"></script>
 </body>
