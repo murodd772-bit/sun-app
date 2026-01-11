@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>SUN App</title>
+    <title>ERA App</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
@@ -14,10 +14,9 @@
     <div class="screens-wrapper">
         
         <div id="home" class="screen active">
-            <div class="promo-badge" id="speed-badge">+0.01% в день</div>
-            
+            <div class="top-badge">+1.0% в день</div>
             <div class="balance-section">
-                <div class="balance-title">Ваш баланс</div>
+                <div class="balance-label">Ваш баланс</div>
                 <div class="balance" id="main-balance">10.000000000</div>
             </div>
             
@@ -25,68 +24,94 @@
                 <i class="fab fa-ethereum"></i>
             </div>
 
-            <div class="games-section">
-                <div class="hero-game" style="margin-bottom: 10px;">
-                    <div id="hero-status">Лидер: Ожидание</div>
-                    <div id="hero-bank" class="hero-timer" style="display:none">Банк: 0.00 TON</div>
-                    <div id="hero-timer" class="hero-timer" style="display:none">5:00</div>
-                    <button class="btn-action" onclick="joinHeroGame()">Стать героем (0.1 TON)</button>
-                </div>
-                <button class="btn-action" onclick="playCoinFlip()" style="background:#2d3b61">CoinFlip (0.1 TON)</button>
-            </div>
-
             <div class="action-row">
                 <button class="btn-action" onclick="openModal('depositModal')">Пополнить</button>
                 <button class="btn-action" onclick="openModal('withdrawModal')">Вывести</button>
+                <button class="btn-action history-btn" onclick="showTab('history-screen')">
+                    <i class="fas fa-clock-rotate-left"></i>
+                </button>
             </div>
         </div>
 
-        <div id="wallet" class="screen">
-            <h2 class="list-title">История кошелька</h2>
-            <div id="history-list" class="history-container"></div>
-            
-            <h3 class="list-title" style="margin-top:20px">Топ майнеров</h3>
-            <div id="rating-list-container" class="rating-list">
-                </div>
+        <div id="rating" class="screen">
+            <h2 class="screen-title">Рейтинг майнеров</h2>
+            <div class="list-container">
+                <div class="rating-card top-1"><span>👑 SARDOR</span><span>1357.00 TON</span></div>
+                <div class="rating-card"><span>🥈 Alexis</span><span>1005.42 TON</span></div>
+                <div class="rating-card"><span>🥉 Mike</span><span>850.11 TON</span></div>
+            </div>
+        </div>
+
+        <div id="games" class="screen">
+            <h2 class="screen-title">Игры</h2>
+            <div class="hero-card">
+                <div id="hero-status">Лидер: Ожидание</div>
+                <div class="hero-bank">Банк: 0.00 TON</div>
+                <button class="btn-action" style="margin-top:10px">Стать героем (0.1 TON)</button>
+            </div>
+            <div class="game-item" onclick="alert('CoinFlip скоро!')">
+                <span>CoinFlip</span>
+                <i class="fas fa-coins"></i>
+            </div>
         </div>
 
         <div id="friends" class="screen">
-            <div class="ref-header">Приглашайте друзей и получайте 10% от их дохода!</div>
-            <div class="ref-main-card">
-                <div class="ref-link-display" id="ref-link-text">t.me/sun_app_bot...</div>
-                <div class="ref-action-buttons">
-                    <button class="btn-invite-main" onclick="shareInvite()">Пригласить</button>
-                    <button class="btn-copy-icon" onclick="copyLink()"><i class="fas fa-copy"></i></button>
-                </div>
+            <p class="ref-info">Приглашайте друзей и получайте 10% от их дохода!</p>
+            <div class="ref-box">
+                <div class="ref-link" id="ref-link-text">t.me/sun_app_bot?start=user</div>
+                <button class="btn-submit" onclick="copyLink()">Копировать ссылку</button>
             </div>
-            <div class="friends-list">
-                <div class="friend-item"><span>Tayler</span><span>0.007 TON</span></div>
+            <h3 class="list-title">Ваши друзья</h3>
+            <div class="list-container">
+                <div class="friend-row"><span>Tayler</span><span>0.007 TON</span></div>
             </div>
         </div>
 
         <div id="earn" class="screen">
-            <h2 class="list-title">Задания</h2>
-            <div class="task-row">
+            <h2 class="screen-title">Задания</h2>
+            <div class="task-card">
                 <div class="task-info">
                     <div class="task-name">Watch AD</div>
-                    <div class="task-price">+0.05 TON</div>
+                    <div class="task-reward">+0.01 TON</div>
                 </div>
-                <button class="task-action-btn" onclick="watchAd()">Start</button>
+                <button class="btn-start">Start</button>
             </div>
+        </div>
+
+        <div id="history-screen" class="screen">
+            <h2 class="screen-title">История кошелька</h2>
+            <div id="history-list" class="list-container"></div>
+            <button class="btn-submit" onclick="showTab('home')" style="background:#1c2541; margin-top:20px">Назад</button>
         </div>
 
     </div>
 
     <nav class="bottom-nav">
-        <div class="nav-item active" onclick="showTab('home', this)"><i class="fas fa-home"></i><span>Home</span></div>
-        <div class="nav-item" onclick="showTab('wallet', this)"><i class="fas fa-wallet"></i><span>Wallet</span></div>
-        <div class="nav-item" onclick="showTab('friends', this)"><i class="fas fa-users"></i><span>Friends</span></div>
-        <div class="nav-item" onclick="showTab('earn', this)"><i class="fas fa-coins"></i><span>Earn</span></div>
+        <div class="nav-item active" onclick="showTab('home', this)"><i class="fas fa-home"></i><span>Главная</span></div>
+        <div class="nav-item" onclick="showTab('rating', this)"><i class="fas fa-trophy"></i><span>Рейтинг</span></div>
+        <div class="nav-item" onclick="showTab('games', this)"><i class="fas fa-gamepad"></i><span>Игры</span></div>
+        <div class="nav-item" onclick="showTab('friends', this)"><i class="fas fa-users"></i><span>Друзья</span></div>
+        <div class="nav-item" onclick="showTab('earn', this)"><i class="fas fa-tasks"></i><span>Задания</span></div>
     </nav>
 </div>
 
-<div id="depositModal" class="overlay"><div class="modal"><input type="number" id="dep-input" placeholder="0.00"><button class="btn-submit" onclick="testDeposit()">OK</button><button onclick="closeModal()">X</button></div></div>
-<div id="withdrawModal" class="overlay"><div class="modal"><input type="number" id="with-input" placeholder="0.00"><button class="btn-submit" onclick="testWithdraw()">OK</button><button onclick="closeModal()">X</button></div></div>
+<div id="depositModal" class="modal-overlay">
+    <div class="modal-content">
+        <h3>Пополнение</h3>
+        <input type="number" id="dep-input" placeholder="0.00">
+        <button class="btn-submit" onclick="testDeposit()">Подтвердить</button>
+        <button class="btn-cancel" onclick="closeModal()">Закрыть</button>
+    </div>
+</div>
+
+<div id="withdrawModal" class="modal-overlay">
+    <div class="modal-content">
+        <h3>Вывод</h3>
+        <input type="number" id="with-input" placeholder="0.00">
+        <button class="btn-submit" onclick="testWithdraw()">Вывести</button>
+        <button class="btn-cancel" onclick="closeModal()">Закрыть</button>
+    </div>
+</div>
 
 <script src="script.js"></script>
 </body>
