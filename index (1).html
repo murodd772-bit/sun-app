@@ -1,1 +1,93 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <title>SUN APP</title>
+
+  <!-- Telegram SDK -->
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<!-- Language Modal -->
+<div id="langModal" class="modal">
+  <div class="modal-box">
+    <h2>Select language</h2>
+    <button onclick="setLanguage('ru')">🇷🇺 Русский</button>
+    <button onclick="setLanguage('en')">🇬🇧 English</button>
+  </div>
+</div>
+
+<!-- Header -->
+<header>
+  <span class="app-name">SUN APP</span>
+  <button class="lang-btn" onclick="toggleLanguage()">🌐</button>
+</header>
+
+<!-- Screens -->
+<main>
+  <!-- HOME -->
+  <section class="screen active" id="home">
+    <div class="balance-card">
+      <p class="label">Balance</p>
+      <h1><span id="balance">0</span> TON</h1>
+    </div>
+
+    <div class="actions">
+      <button class="btn green">➕ Deposit</button>
+      <button class="btn red">➖ Withdraw</button>
+      <button class="btn gray" onclick="openHistory()">📜 History</button>
+    </div>
+  </section>
+
+  <!-- TOP -->
+  <section class="screen" id="top">
+    <h2 class="title">🏆 Top players</h2>
+    <ul id="topList" class="top-list"></ul>
+  </section>
+
+  <!-- GAMES -->
+  <section class="screen" id="games">
+    <h2 class="title">🎮 Games</h2>
+    <div class="game-card">🪙 Coin Flip (soon)</div>
+    <div class="game-card">👑 Last Leader (soon)</div>
+  </section>
+
+  <!-- FRIENDS -->
+  <section class="screen" id="friends">
+    <h2 class="title">👥 Friends</h2>
+    <p class="text-muted">Referral system coming soon</p>
+  </section>
+
+  <!-- EARN -->
+  <section class="screen" id="earn">
+    <h2 class="title">📈 Earn</h2>
+    <p class="text-muted">Tasks & rewards coming soon</p>
+  </section>
+</main>
+
+<!-- Bottom Navigation -->
+<nav>
+  <button onclick="showScreen('home')">Home</button>
+  <button onclick="showScreen('top')">Top</button>
+  <button class="center" onclick="showScreen('games')">🎮</button>
+  <button onclick="showScreen('friends')">Friends</button>
+  <button onclick="showScreen('earn')">Earn</button>
+</nav>
+
+<!-- History Modal -->
+<div id="historyModal" class="modal">
+  <div class="modal-box">
+    <h2>History</h2>
+    <ul id="historyList"></ul>
+    <button onclick="closeHistory()">Close</button>
+  </div>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
 
