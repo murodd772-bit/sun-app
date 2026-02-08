@@ -1,95 +1,162 @@
-:root {
-    --accent-blue: #2d5bff;
-    --bg-black: #000000;
-    --card-bg: #0a0a0f;
-    --text-gray: #a1a1a1;
-    --ref-purple: #4231a5;
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont;
 }
 
 body {
-    margin: 0; background: var(--bg-black); color: white;
-    font-family: -apple-system, system-ui, sans-serif; height: 100vh; overflow: hidden;
+  background: #0e0f13;
+  color: #fff;
+  height: 100vh;
 }
 
-.app-container { display: flex; flex-direction: column; height: 100%; max-width: 500px; margin: 0 auto; position: relative; }
-.screens-wrapper { flex: 1; position: relative; }
-.screen { position: absolute; inset: 0; display: none; padding: 20px; flex-direction: column; overflow-y: auto; }
-.screen.active { display: flex; }
-
-/* Дизайн реферальной части */
-.ref-info { font-size: 14px; line-height: 1.4; color: #eee; margin-bottom: 20px; }
-.ref-box { background: #0c162d; border-radius: 20px; padding: 20px; border: 1px solid #1a2a4d; margin-bottom: 25px; }
-.ref-title { font-size: 22px; font-weight: bold; margin-bottom: 15px; }
-.ref-link-field { background: #162447; padding: 15px; border-radius: 12px; font-size: 14px; color: #8ba3e0; word-break: break-all; margin-bottom: 15px; }
-.ref-buttons { display: flex; gap: 10px; }
-.btn-invite { flex: 1; background: #3e59b5; border: none; border-radius: 12px; color: white; font-weight: bold; display: flex; align-items: center; justify-content: center; height: 50px; cursor: pointer; }
-.btn-copy { width: 50px; background: #3e59b5; border: none; border-radius: 12px; display: flex; align-items: center; justify-content: center; cursor: pointer; }
-
-.list-title { font-size: 24px; margin-bottom: 15px; }
-.friend-card {
-    background: linear-gradient(90deg, #1a0b35, #0a0a0f);
-    padding: 15px; border-radius: 12px; margin-bottom: 10px;
-    display: flex; justify-content: space-between; align-items: center;
-    border: 1px solid #321b5e;
+header {
+  height: 56px;
+  background: #14151b;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
 }
-.friend-name { font-size: 16px; font-weight: 500; }
-.friend-balance { display: flex; align-items: center; gap: 5px; font-weight: bold; }
-.ton-icon-small { width: 18px; height: 18px; background: #0088cc; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 10px; }
 
-/* Остальные стили */
-.promo-badge { background: rgba(45, 91, 255, 0.1); border-bottom: 2px solid var(--accent-blue); padding: 8px 20px; border-radius: 12px; margin-top: 15px; width: fit-content; align-self: center; }
-.balance { font-size: 40px; font-weight: 800; margin: 25px 0; text-align: center; }
-.ton-logo-circle { width: 200px; height: 200px; background: var(--accent-blue); border-radius: 50%; align-self: center; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 30px rgba(45,91,255,0.4); margin-bottom: 40px; }
-.action-row { display: flex; gap: 10px; margin-top: auto; padding-bottom: 10px; }
-.btn-action { flex: 1; padding: 18px; border-radius: 18px; border: 1px solid #333; background: #111; color: white; font-weight: bold; font-size: 16px; }
-
-.history-item { background: #0f0f14; padding: 15px; border-radius: 15px; margin-bottom: 10px; display: flex; justify-content: space-between; border-left: 4px solid #333; }
-.history-item.plus { border-left-color: #4cd964; }
-.history-item.minus { border-left-color: #ff3b30; }
-
-.nav-bar { background: #08080c; display: flex; justify-content: space-around; padding: 10px 0 30px; border-top: 1px solid #1a1a1a; }
-.nav-item { color: #555; display: flex; flex-direction: column; align-items: center; font-size: 11px; cursor: pointer; }
-.nav-item.active { color: white; }
-.nav-icon { width: 24px; fill: currentColor; margin-bottom: 4px; }
-
-.overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.8); display: none; align-items: center; justify-content: center; z-index: 2000; }
-.modal { background: #111; padding: 25px; border-radius: 20px; width: 85%; border: 1px solid #333; }
-.btn-submit { width: 100%; padding: 15px; background: var(--accent-blue); border: none; border-radius: 12px; color: white; font-weight: bold; margin-top: 10px; cursor: pointer; }
-
-.modal input { width: 100%; padding: 12px; background: #1c1c24; border: 1px solid #333; color: white; margin: 10px 0; border-radius: 12px; box-sizing: border-box; }
-
-/* Стили для заданий */
-.task-card {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 15px;
-    margin-bottom: 12px;
-    border-radius: 15px;
-    background: #0a0a0f;
-    border: 1px solid #1a1a1a;
+.app-name {
+  font-weight: 700;
 }
-.ad-special {
-    background: linear-gradient(90deg, #0a0a0f 0%, #1a1a2e 100%);
-    border: 1px solid var(--accent-blue);
+
+.lang-btn {
+  background: none;
+  border: none;
+  font-size: 20px;
+  color: #fff;
 }
-.task-info { display: flex; flex-direction: column; }
-.task-title { font-weight: bold; font-size: 14px; color: white; }
-.task-reward { color: #4cd964; font-size: 13px; margin-top: 4px; font-weight: bold; }
-.task-btn { 
-    width: auto !important; 
-    padding: 8px 15px !important; 
-    font-size: 13px !important; 
-    margin: 0 !important; 
-    border-radius: 10px;
-    border: none;
-    background: var(--accent-blue);
-    color: white;
-    cursor: pointer;
+
+main {
+  padding: 16px;
+  padding-bottom: 90px;
 }
-.task-done { 
-    background: #222 !important; 
-    color: #555 !important; 
-    border: 1px solid #333 !important; 
-    cursor: default; 
+
+.screen {
+  display: none;
+  animation: fade 0.3s ease;
+}
+
+.screen.active {
+  display: block;
+}
+
+@keyframes fade {
+  from { opacity: 0; transform: translateY(5px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.balance-card {
+  background: linear-gradient(135deg, #2b5cff, #00d4ff);
+  border-radius: 16px;
+  padding: 20px;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.balance-card h1 {
+  font-size: 32px;
+}
+
+.actions {
+  display: flex;
+  gap: 10px;
+  justify-content: space-between;
+}
+
+.btn {
+  flex: 1;
+  padding: 14px;
+  border-radius: 14px;
+  border: none;
+  color: #fff;
+  font-weight: 600;
+}
+
+.green { background: #2ecc71; }
+.red { background: #e74c3c; }
+.gray { background: #3a3b41; }
+
+.title {
+  margin-bottom: 12px;
+}
+
+.top-list {
+  list-style: none;
+}
+
+.top-list li {
+  background: #1c1d24;
+  padding: 12px;
+  border-radius: 12px;
+  margin-bottom: 8px;
+}
+
+.game-card {
+  background: #1c1d24;
+  padding: 16px;
+  border-radius: 14px;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.text-muted {
+  opacity: 0.6;
+}
+
+nav {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  height: 70px;
+  background: #14151b;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+nav button {
+  background: none;
+  border: none;
+  color: #aaa;
+  font-size: 14px;
+}
+
+nav .center {
+  background: linear-gradient(135deg, #2b5cff, #00d4ff);
+  color: #fff;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  font-size: 20px;
+  margin-top: -30px;
+}
+
+.modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  display: none;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-box {
+  background: #1c1d24;
+  padding: 20px;
+  border-radius: 16px;
+  width: 80%;
+  text-align: center;
+}
+
+.modal-box button {
+  margin-top: 10px;
+  width: 100%;
+  padding: 12px;
+  border-radius: 12px;
+  border: none;
 }
